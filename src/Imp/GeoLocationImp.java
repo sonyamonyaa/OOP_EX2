@@ -1,8 +1,6 @@
 package Imp;
 
-import api.GeoLocation;
-
-public class GeoLocationImp implements GeoLocation {
+public class GeoLocationImp implements api.GeoLocation {
     private double x, y, z;
 
     public GeoLocationImp(double x, double y, double z) {
@@ -10,7 +8,7 @@ public class GeoLocationImp implements GeoLocation {
         this.y = y;
         this.z = z;
     }
-    public GeoLocationImp (GeoLocation gl){
+    public GeoLocationImp(api.GeoLocation gl){
         this.x = gl.x();
         this.y = gl.y();
         this.z = gl.z();
@@ -32,7 +30,7 @@ public class GeoLocationImp implements GeoLocation {
     }
 
     @Override
-    public double distance(GeoLocation g) {
+    public double distance(api.GeoLocation g) {
         double dist = Math.pow((g.x() - this.x),2) + Math.pow((g.y() - this.y),2) + Math.pow((g.z() - this.z),2);
         return Math.sqrt(dist);
     }

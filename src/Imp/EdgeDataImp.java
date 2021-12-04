@@ -2,58 +2,58 @@ package Imp;
 
 public class EdgeDataImp implements api.EdgeData {
 
-    private int _src;
-    private int _dest;
-    private double _weight;
-    private int _tag;
-    private String _info;
+    private int src;
+    private int dest;
+    private double weight;
+    private int tag;
+    private String info;
 
-    public EdgeDataImp(int src,int dest, int weight){
-        this._src=src;
-        this._dest=dest;
-        this._weight=weight;
+    public EdgeDataImp(int src, int dest, int weight){
+        this.src =src;
+        this.dest =dest;
+        this.weight =weight;
         this.setTag(0); //default
     }
     public EdgeDataImp(api.EdgeData edge){
 
-        this._src = edge.getSrc();
-        this._dest =edge.getDest();
-        this._weight = edge.getWeight();
-        this._tag = edge.getTag();
+        this.src = edge.getSrc();
+        this.dest =edge.getDest();
+        this.weight = edge.getWeight();
+        this.tag = edge.getTag();
         this.setInfo(edge.getInfo());
     }
     @Override
     public int getSrc() {
-        return this._src;
+        return this.src;
     }
 
     @Override
     public int getDest() {
-        return this._dest;
+        return this.dest;
     }
 
     @Override
     public double getWeight() {
-        return this._weight;
+        return this.weight;
     }
 
     @Override
     public String getInfo() {
-        return this._info;
+        return this.info;
     }
 
     @Override
     public void setInfo(String s) {
-        this._info = s;
+        this.info = s;
     }
 
     @Override
     public int getTag() {
-        return this._tag;
+        return this.tag;
     }
 
     @Override
     public void setTag(int t) {
-        this._tag = t;
+        this.tag = t;
     }
 }

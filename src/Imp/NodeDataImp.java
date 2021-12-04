@@ -1,15 +1,13 @@
 package Imp;
-import api.GeoLocation;
-import api.NodeData;
 
-public class NodeDataImp implements NodeData {
+public class NodeDataImp implements api.NodeData {
     private int key;
-    private GeoLocation geoLocation;
+    private api.GeoLocation geoLocation;
     private double weight;
     private int tag;
     private String info;
 
-    public NodeDataImp(int key, GeoLocation p,double weight,String info) {
+    public NodeDataImp(int key, api.GeoLocation p, double weight, String info) {
         this.setKey(key);
         this.setLocation(p);
         this.setWeight(weight);
@@ -17,7 +15,7 @@ public class NodeDataImp implements NodeData {
         this.setTag(0);
     }
 
-    public NodeDataImp(NodeData n) {
+    public NodeDataImp(api.NodeData n) {
         this.setKey(n.getKey());
         this.setLocation(n.getLocation());
         this.setWeight(n.getWeight());
@@ -35,12 +33,12 @@ public class NodeDataImp implements NodeData {
     }
 
     @Override
-    public GeoLocation getLocation() {
+    public api.GeoLocation getLocation() {
         return this.geoLocation;
     }
 
     @Override
-    public void setLocation(GeoLocation p) {
+    public void setLocation(api.GeoLocation p) {
         this.geoLocation = new GeoLocationImp(p);
     }
 
