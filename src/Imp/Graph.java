@@ -23,6 +23,10 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     private Vertices vertices;
     private Edges edges;
 
+    public Graph(Vertices vertices, Edges edges) {
+        this.vertices = vertices;
+        this.edges = edges;
+    }
 
     @Override
     public NodeData getNode(int key) {

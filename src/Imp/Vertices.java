@@ -16,7 +16,7 @@ uses streams to implement the Iterable interface
  */
 
 
-class Vertices implements Iterable{
+class Vertices implements Iterable<NodeData>{
 
     private NodeData[] arr;
 
@@ -87,7 +87,7 @@ class Vertices implements Iterable{
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<NodeData> iterator() {
         return Arrays.stream(arr).iterator();
     }
 }

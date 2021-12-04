@@ -8,13 +8,13 @@ public class Edge implements api.EdgeData {
     private int tag;
     private String info;
 
-    public Edge(int src, int dest, int weight){
+    public Edge(int src, int dest, double weight){
         this.src =src;
         this.dest =dest;
         this.weight =weight;
         this.setTag(0); //default
     }
-    public Edge(api.EdgeData edge){
+    public Edge(Edge edge){
 
         this.src = edge.getSrc();
         this.dest =edge.getDest();
@@ -22,6 +22,19 @@ public class Edge implements api.EdgeData {
         this.tag = edge.getTag();
         this.setInfo(edge.getInfo());
     }
+
+    public void setSrc(int src) {
+        this.src = src;
+    }
+
+    public void setDest(int dest) {
+        this.dest = dest;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
     @Override
     public int getSrc() {
         return this.src;
