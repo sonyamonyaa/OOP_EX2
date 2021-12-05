@@ -1,19 +1,29 @@
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class EdgeDataImpTest {
+class NodeTest {
 
     @Test
-    void getSrc() {
+    void setKey() {
     }
 
     @Test
-    void getDest() {
+    void getKey() {
+    }
+
+    @Test
+    void getLocation() {
+    }
+
+    @Test
+    void setLocation() {
     }
 
     @Test
     void getWeight() {
+    }
+
+    @Test
+    void setWeight() {
     }
 
     @Test
