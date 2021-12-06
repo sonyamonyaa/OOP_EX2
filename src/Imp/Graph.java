@@ -80,7 +80,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     @Override
     public NodeData removeNode(int key) {
-        edges.remove(key);
+        edges.removeNode(key);
         return vertices.remove(key);
     }
 
@@ -96,7 +96,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     @Override
     public int edgeSize() {
-        return edges.getSize();
+        return edges.getEdgeCount();
     }
 
     @Override
