@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 class Edges {
 
-    private TreeMap<Double, EdgeData>[] arr;
+    private TreeMap<Integer, EdgeData>[] arr;
     private int size;
 
     public int getSize() {
@@ -29,38 +29,32 @@ class Edges {
             this.increase();
         }
 
-        arr[key] = new TreeMap<Double, EdgeData>();
+        arr[key] = new TreeMap<Integer, EdgeData>();
         size++;
     }
 
     private void increase() {
         int size = (int) (arr.length * 1.2);
-        TreeMap<Double,EdgeData>[] NewArr = new TreeMap[size];
+        TreeMap<Integer,EdgeData>[] NewArr = new TreeMap[size];
 
         System.arraycopy(arr, 0, NewArr, 0, arr.length);
 
         arr = NewArr;
     }
 
+    public TreeMap<Integer, EdgeData> getEdgesOf(int src){
+        return arr[src];
+    }
+
     public EdgeData getEdge(int src, int dest) {
-        Iterator<EdgeData> it  = arr[src].values().iterator();
-        EdgeData e = null;
-
-        while (it.hasNext()){
-            e = it.next();
-            if (e.getDest() == dest){
-                break;
-            }
-        }
-
-        return e;
+        return getEdgesOf(src).get(dest);
     }
 
     public void connect(int src, int dest, double w) {
         EdgeData e = new Edge(src,dest,w);
         // if an edge of the same src and dest already exist
         //update the weight of that edge with w
-        arr[src].put(w, e);
+        arr[src].put(dest, e);
     }
 
     public Iterator<EdgeData> getIter() {
@@ -80,15 +74,7 @@ class Edges {
         return arr[node_id].values().iterator();
     }
 
-    public EdgeData removeEdge(int src, int dest) {
-        EdgeData e = getEdge(src, dest);
-        arr[src].remove(e);
+    public EdgeData removeEdge(int src, int dest) { return arr[src].remove(dest);}
 
-        return e;
-    }
-
-    public void remove(int key){
-        arr[key] = null;
-        size--;
-    }
+    public void remove(int key){ arr[key] = null; size--;}
 }
