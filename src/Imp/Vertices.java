@@ -37,7 +37,7 @@ class Vertices implements Iterable<NodeData>{
         return size;
     }
 
-    public int leangth(){return FreeMemory.get(FreeMemory.size() -1);}
+    public int length(){return FreeMemory.get(FreeMemory.size() -1);}
 
     public NodeData get(int key){
         return arr[key];

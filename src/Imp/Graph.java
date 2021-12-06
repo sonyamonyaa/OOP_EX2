@@ -27,15 +27,11 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     private Vertices vertices;
     private Edges edges;
     private int modeCount;
-    public Graph() {
-        this.vertices = null;
-        this.edges = null;
-        modeCount = 0;
-    }
 
     public Graph(int InitSize){
         this.vertices = new Vertices(InitSize);
         this.edges = new Edges(InitSize);
+        modeCount = 0;
     }
 
     @Override
@@ -81,11 +77,13 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     @Override
     public NodeData removeNode(int key) {
         edges.removeNode(key);
+        modeCount++;
         return vertices.remove(key);
     }
 
     @Override
     public EdgeData removeEdge(int src, int dest) {
+        modeCount++;
         return edges.removeEdge(src, dest);
     }
 
@@ -144,7 +142,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         int ind  = vertices.getFirst();
         double MinMaxDist = Integer.MAX_VALUE;
 
-        for (int i = ind; i < vertices.leangth(); i++){
+        for (int i = ind; i < vertices.length(); i++){
             if (getNode(i) != null){
                 double result = DFS(i);
                 if (result < MinMaxDist){
@@ -195,7 +193,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     }
 
     private boolean DFS(){//all reachable?
-        Stack<Integer> s = new Stack();
+        Stack<Integer> s = new Stack<>();
         s.push(vertices.getFirst());
         int NodesReached = 0;
 
@@ -221,8 +219,8 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     }
 
     private List<NodeData> DFS(int src, int dest){//shortest path
-        List best = new LinkedList();
-        List tmp = new LinkedList();
+        List<NodeData> best = new LinkedList<>();
+        List<NodeData> tmp = new LinkedList<>();
         double min = Integer.MAX_VALUE,  curr = 0;
 
         Stack<EdgeData> S = new Stack<>();
