@@ -22,10 +22,10 @@ class VerticesTest {
         Node n1 = new Node(1,g1,2,"second node");
         graph.addNode(n1);
         Node temp = (Node) graph.getNode(0);
-        assertTrue(n.equals(temp));
+        assertEquals(n,temp);
         temp = (Node) graph.getNode(1);
-        assertFalse(n.equals(temp));
-        assertTrue(n1.equals(temp));
+        assertNotEquals(n, temp);
+        assertEquals(n1, temp);
 
     }
 
@@ -48,7 +48,7 @@ class VerticesTest {
         graph.addNode(n);
         assertEquals(1, graph.nodeSize());
         Node r = (Node) graph.removeNode(0);
-        assertTrue(n.equals(r));
+        assertEquals(n, r);
         assertEquals(0, graph.nodeSize());
     }
 }

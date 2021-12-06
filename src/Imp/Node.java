@@ -7,6 +7,13 @@ public class Node implements api.NodeData {
     private int tag;
     private String info;
 
+    public Node(int key, api.GeoLocation p) {
+        this.setKey(key);
+        this.setLocation(p);
+        this.setWeight(0);
+        this.setInfo("");
+        this.setTag(0);
+    }
     public Node(int key, api.GeoLocation p, double weight, String info) {
         this.setKey(key);
         this.setLocation(p);

@@ -22,11 +22,11 @@ class NodeTest {
     @Test
     void Location() {
         geoLocation p1 = (geoLocation) n.getLocation();
-        assertTrue(p1.x() == g.x() && p1.y() == g.y() && p1.z() == g.z());
+        assertEquals(g,p1);
         geoLocation p2 = new geoLocation(2,2,2);
         n.setLocation(p2);
         p1 = (geoLocation) n.getLocation();
-        assertTrue(p1.x() == p2.x() && p1.y() == p2.y() && p1.z() == p2.z());
+        assertEquals(p2,p1);
     }
 
     @Test
