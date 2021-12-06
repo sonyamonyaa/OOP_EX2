@@ -8,16 +8,18 @@ public class Edge implements api.EdgeData {
     private int tag;
     private String info;
 
-    public Edge(int src, int dest, double weight){
-        this.src =src;
-        this.dest =dest;
-        this.weight =weight;
+    public Edge(int src, int dest, double weight) {
+        this.src = src;
+        this.dest = dest;
+        this.weight = weight;
         this.setTag(0); //default
+        this.info = "";
     }
-    public Edge(Edge edge){
+
+    public Edge(Edge edge) {
 
         this.src = edge.getSrc();
-        this.dest =edge.getDest();
+        this.dest = edge.getDest();
         this.weight = edge.getWeight();
         this.tag = edge.getTag();
         this.setInfo(edge.getInfo());
