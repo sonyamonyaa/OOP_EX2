@@ -13,15 +13,14 @@ import java.util.stream.Stream;
 class Edges {
 
     private TreeMap<Integer, EdgeData>[] arr;
-    private int size;
+    private int edgeCount;
 
-    public int getSize() {
-        return size;
-    }
+
+    public int getEdgeCount(){return edgeCount;}
 
     public Edges(int initialSize){
         this.arr = new TreeMap[initialSize];
-        size = 0;
+        edgeCount = 0;
     }
 
     public void add(int key){
@@ -30,7 +29,6 @@ class Edges {
         }
 
         arr[key] = new TreeMap<Integer, EdgeData>();
-        size++;
     }
 
     private void increase() {
@@ -52,9 +50,12 @@ class Edges {
 
     public void connect(int src, int dest, double w) {
         EdgeData e = new Edge(src,dest,w);
-        // if an edge of the same src and dest already exist
-        //update the weight of that edge with w
+        if (arr[src].containsKey(dest)){
+            removeEdge(src, dest);
+        }
         arr[src].put(dest, e);
+
+        edgeCount++;
     }
 
     public Iterator<EdgeData> getIter() {
@@ -74,7 +75,17 @@ class Edges {
         return arr[node_id].values().iterator();
     }
 
-    public EdgeData removeEdge(int src, int dest) { return arr[src].remove(dest);}
+    public EdgeData removeEdge(int src, int dest) {edgeCount--; return arr[src].remove(dest);}
 
-    public void remove(int key){ arr[key] = null; size--;}
+    public void removeNode(int key){
+        remove(key);
+
+        for(int i = 0; i < arr.length; i++){
+            if (arr[i] != null){
+                arr[i].remove(key);
+            }
+        }
+    }
+
+    public void remove(int key){ arr[key] = null;}
 }
