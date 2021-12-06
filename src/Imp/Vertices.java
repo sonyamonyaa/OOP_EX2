@@ -37,6 +37,8 @@ class Vertices implements Iterable<NodeData>{
         return size;
     }
 
+    public int leangth(){return FreeMemory.get(FreeMemory.size() -1);}
+
     public NodeData get(int key){
         return arr[key];
     }
@@ -84,6 +86,19 @@ class Vertices implements Iterable<NodeData>{
 
         size--;
         return n;
+    }
+
+    public int getFirst(){
+        int i = 0;
+        while (arr[i] != null){
+            i++;
+        }
+
+        if (i < arr.length){
+            return i;
+        }else {
+            return -1;
+        }
     }
 
     @Override
