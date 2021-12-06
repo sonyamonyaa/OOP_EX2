@@ -101,7 +101,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     @Override
     public int getMC() {
-        return modeCount++;
+        return modeCount;
     }
 
     @Override
