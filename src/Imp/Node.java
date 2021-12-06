@@ -71,4 +71,13 @@ public class Node implements api.NodeData {
     public void setTag(int t) {
         this.tag = t;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Node n = (Node) obj;
+        boolean ans = this.key == n.getKey() && Double.compare(n.getWeight(), this.weight) == 0 && this.tag == n.getTag();
+        return ans && this.geoLocation.equals(n.getLocation()) && this.info.equals(n.getInfo());
+    }
 }

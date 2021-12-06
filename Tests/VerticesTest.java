@@ -1,26 +1,54 @@
+import Imp.Graph;
+import Imp.Node;
+import Imp.geoLocation;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class VerticesTest {
+    /*
+     * This test is specifically for the Vertices class, as it is in a protected package, we are using Graph
+     * as its node methods are directly tied to the Vertices class
+     */
+
+    private Graph graph = new Graph(2);
+    private geoLocation g = new geoLocation(1, 1, 0);
+    private Node n = new Node(0, g, 0, "og node");
 
     @Test
-    void getSize() {
+    void getNode() {
+        graph.addNode(n);
+        geoLocation g1 = new geoLocation(1,2,0);
+        Node n1 = new Node(1,g1,2,"second node");
+        graph.addNode(n1);
+        Node temp = (Node) graph.getNode(0);
+        assertTrue(n.equals(temp));
+        temp = (Node) graph.getNode(1);
+        assertFalse(n.equals(temp));
+        assertTrue(n1.equals(temp));
+
     }
 
     @Test
-    void get() {
+    void addNode() {
+        assertEquals(0, graph.nodeSize());
+        graph.addNode(n);
+        assertEquals(1, graph.nodeSize());
+        //duplicates by geolocation shouldn't be added?
+        //graph.addNode(n);
+        //assertEquals(1,graph.nodeSize()); //hopefully wouldn't change
     }
 
     @Test
-    void add() {
+    void nodeIter() {
     }
 
     @Test
-    void remove() {
-    }
-
-    @Test
-    void iterator() {
+    void removeNode() {
+        graph.addNode(n);
+        assertEquals(1, graph.nodeSize());
+        Node r = (Node) graph.removeNode(0);
+        assertTrue(n.equals(r));
+        assertEquals(0, graph.nodeSize());
     }
 }

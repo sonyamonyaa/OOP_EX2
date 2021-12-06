@@ -1,17 +1,10 @@
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class EdgesTest {
-
-    @Test
-    void getSize() {
-    }
-
-    @Test
-    void add() {
-    }
-
+    /*
+     * This test is specifically for the Edges class, as it is in a protected package we are using Graph
+     * as its edge methods are directly tied to the Edges class
+     */
     @Test
     void getEdge() {
     }
@@ -21,18 +14,19 @@ class EdgesTest {
     }
 
     @Test
-    void getIter() {
+    void edgeIter() {
     }
 
     @Test
-    void getEdgeIter() {
+    void testEdgeIter() {
     }
+
 
     @Test
     void removeEdge() {
     }
 
     @Test
-    void remove() {
+    void edgeSize() {
     }
 }

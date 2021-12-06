@@ -1,52 +1,10 @@
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class GraphTest {
-
-    @Test
-    void getNode() {
-    }
-
-    @Test
-    void getEdge() {
-    }
-
-    @Test
-    void addNode() {
-    }
-
-    @Test
-    void connect() {
-    }
-
-    @Test
-    void nodeIter() {
-    }
-
-    @Test
-    void edgeIter() {
-    }
-
-    @Test
-    void testEdgeIter() {
-    }
-
-    @Test
-    void removeNode() {
-    }
-
-    @Test
-    void removeEdge() {
-    }
-
-    @Test
-    void nodeSize() {
-    }
-
-    @Test
-    void edgeSize() {
-    }
+    /*
+    * We wanted to separate the Graph tests for readability and not test everything in bulk
+    * For the Edges and Node method tests please refer to EdgesTest and VerticesTest accordingly.
+     */
 
     @Test
     void getMC() {
