@@ -20,12 +20,18 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
        The class "synchronises" the states/activities of the 2 structures
      */
 
+    /*
+    The iterator should throw an exception when the graph has been tempered with (add/connect or remove)
+    I think maybe we need to add/remove only through the iterator but idk - s
+     */
+
     private Vertices vertices;
     private Edges edges;
-
-    public Graph(Vertices vertices, Edges edges) {
-        this.vertices = vertices;
-        this.edges = edges;
+    private int modeCount;
+    public Graph() {
+        this.vertices = null;
+        this.edges = null;
+        modeCount = 0;
     }
 
     @Override
@@ -42,13 +48,14 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     public void addNode(NodeData n) {
         int loc = vertices.add(n);
         edges.add(loc);
-
+        modeCount++;
     }
 
 
     @Override
     public void connect(int src, int dest, double w) {
         edges.connect(src, dest, w);
+        modeCount++;
     }
 
     @Override
@@ -91,7 +98,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     @Override
     public int getMC() {
-        return 0;
+        return modeCount++;
     }
 
     @Override
