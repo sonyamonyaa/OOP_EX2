@@ -5,7 +5,10 @@ import Imp.geoLocation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
+/*
+ * This test is specifically for the Edges class, as it is in a protected package we are using Graph
+ * as its edge methods are directly tied to the Edges class
+ */
 class EdgesTest {private Edge e1 = new Edge(0,1,1.232037506070033);
     private Edge e2 = new Edge(1,2,1.8015954015822042);
     private Edge e3 = new Edge(1,0,1.8635670623870366);
@@ -13,10 +16,7 @@ class EdgesTest {private Edge e1 = new Edge(0,1,1.232037506070033);
     private Node n2 = new Node(1,new geoLocation(35.20319591121872,32.10318254621849,0.0));
     private Node n3 = new Node(2,new geoLocation(35.20752617756255,32.1025646605042,0.0));
     private Graph g = new Graph(3);
-    /*
-     * This test is specifically for the Edges class, as it is in a protected package we are using Graph
-     * as its edge methods are directly tied to the Edges class
-     */
+
     @BeforeEach
     void setUp(){
         g.addNode(n1);
