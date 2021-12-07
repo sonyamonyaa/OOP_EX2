@@ -3,6 +3,8 @@ package Imp;
 import api.EdgeData;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
@@ -59,16 +61,18 @@ class Edges {
     }
 
     public Iterator<EdgeData> getIter() {
-        TreeMap<Double,EdgeData> t = new TreeMap<Double, EdgeData>();
-        Stream s = t.entrySet().stream();
+        List l = new LinkedList();
 
         for (int i = 0; i < arr.length; i++){
             if (arr[i] != null){
-                Stream combined = Stream.concat(s, arr[i].entrySet().stream());
+                Iterator it = getEdgeIter(i);
+                while (it.hasNext()){
+                    l.add(it.next());
+                }
             }
         }
 
-        return s.iterator();
+        return l.iterator();
     }
 
     public Iterator<EdgeData> getEdgeIter(int node_id) {
