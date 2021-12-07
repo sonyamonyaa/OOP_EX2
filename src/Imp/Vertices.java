@@ -54,7 +54,13 @@ class Vertices implements Iterable<NodeData>{
         Node node = new Node(n);
 
         int last = FreeMemory.get(0);
-        node.setKey(last);
+
+        if (last != node.getKey()){
+            String message = "node " + node.getKey() + " ";
+            node.setKey(last);
+            System.out.println(message + "is now node " + node.getKey());
+        }
+
         FreeMemory.remove(0);
         if (FreeMemory.isEmpty()){
             FreeMemory.add(last +1);
@@ -98,6 +104,18 @@ class Vertices implements Iterable<NodeData>{
             return i;
         }else {
             return -1;
+        }
+    }
+
+
+    //returns the last location in the
+    //structure that contains a node
+    public int max(){
+        int n = FreeMemory.get(FreeMemory.size() -1);
+        if (n == arr.length){
+            return n-1;
+        }else {
+            return n;
         }
     }
 

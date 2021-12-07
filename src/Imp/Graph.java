@@ -1,10 +1,15 @@
 package Imp;
 
-import api.DirectedWeightedGraph;
-import api.DirectedWeightedGraphAlgorithms;
-import api.EdgeData;
-import api.NodeData;
+import api.*;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgorithms {
@@ -28,6 +33,11 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     private Edges edges;
     private int modeCount;
 
+    public Graph(){
+        this.vertices = null;
+        this.edges = null;
+    }
+
     public Graph(int InitSize){
         this.vertices = new Vertices(InitSize);
         this.edges = new Edges(InitSize);
@@ -44,6 +54,9 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         return edges.getEdge(src, dest);
     }
 
+
+    //In our implementation if a node of
+    //was deleted a new node will take its key
     @Override
     public void addNode(NodeData n) {
         int loc = vertices.add(n);
@@ -142,7 +155,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         int ind  = vertices.getFirst();
         double MinMaxDist = Integer.MAX_VALUE;
 
-        for (int i = ind; i < vertices.length(); i++){
+        for (int i = ind; i < vertices.max(); i++){
             if (getNode(i) != null){
                 double result = DFS(i);
                 if (result < MinMaxDist){
@@ -167,7 +180,64 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     @Override
     public boolean load(String file) {
-        return false;
+        try {
+            JSONParser parser = new JSONParser();
+            JSONObject Jobj = (JSONObject) parser.parse(new FileReader(file));
+            JSONArray Jarr = (JSONArray) Jobj.get("Nodes");
+
+            vertices = new Vertices(Jarr.size());
+            edges = new Edges(Jarr.size());
+
+            int i = 0;
+            while (i < Jarr.size()){
+
+                String s = Jarr.get(i).toString();
+                s = s.substring(1, s.length() -1);
+
+                String[] data = s.split(",");
+                for (int j = 0; j < data.length; j++){
+                    data[j] = data[j].substring(data[j].indexOf(':') +1);
+                }
+                data[0] = data[0].substring(1);
+                data[2] = data[2].substring(0, data[2].length() -1);
+
+                double x = Double.parseDouble(data[0]);
+                double y = Double.parseDouble(data[1]);
+                double z = Double.parseDouble(data[2]);
+                GeoLocation g = new geoLocation(x, y, z);
+                int id = Integer.parseInt(data[3]);
+
+                addNode(new Node(id, g, 0, null));
+
+                i++;
+            }
+
+            Jarr = (JSONArray) Jobj.get("Edges");
+            i = 0;
+            while (i < Jarr.size()){
+
+                String s = Jarr.get(i).toString();
+                s = s.substring(2, s.length() -1);
+
+                String[] data = s.split(",");
+                for (int j = 0; j < data.length; j++){
+                    data[j] = data[j].substring(data[j].indexOf(':') +1);
+                }
+
+                int src = Integer.parseInt(data[0]);
+                double weight = Double.parseDouble(data[1]);
+                int dest = Integer.parseInt(data[2]);
+                connect(src, dest, weight);
+
+                i++;
+            }
+
+        }catch (IOException | ParseException e){
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     private static Graph transpose(Graph g){
@@ -229,10 +299,10 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         while (! S.isEmpty()){
 
             EdgeData e = S.pop();
-            if (e.getDest() == dest){
-                curr += e.getWeight();
-                tmp.add(0, getNode(e.getDest()));
+            curr += e.getWeight();
+            tmp.add(0, getNode(e.getDest()));
 
+            if (e.getDest() == dest){
                 if (curr < min){
                     min = curr;
                     best = tmp.subList(0, tmp.size());//copy
@@ -247,6 +317,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
             }else {
                 tmp.remove(0);
             }
+
             getNode(e.getDest()).setTag(1);
         }
 
@@ -268,6 +339,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
             EdgeData e = S.pop();
             curr += e.getWeight();
+
             if (dists[e.getDest()] == 0){
                 it = edgeIter(e.getDest());
                 while (it.hasNext()){
