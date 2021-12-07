@@ -264,19 +264,22 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     private boolean DFS(){//all reachable?
         Stack<Integer> s = new Stack<>();
-        s.push(vertices.getFirst());
+        int start = vertices.getFirst();
+        getNode(start).setTag(1);
+        s.push(start);
+
         int NodesReached = 0;
 
         while (! s.isEmpty()){
             int loc = s.pop();
-            vertices.get(loc).setTag(1);
             NodesReached++;
 
             Iterator<EdgeData> it = edgeIter(loc);
             while (it.hasNext()){
                 EdgeData e = it.next();
 
-                if (vertices.get(e.getDest()).getTag() != 1){
+                if (getNode(e.getDest()).getTag() != 1){
+                    vertices.get(e.getDest()).setTag(1);
                     s.push(e.getDest());
                 }
             }

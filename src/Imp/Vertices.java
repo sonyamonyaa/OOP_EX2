@@ -96,15 +96,14 @@ class Vertices implements Iterable<NodeData>{
 
     public int getFirst(){
         int i = 0;
-        while (arr[i] != null){
+        while (i < arr.length){
+            if (arr[i] != null){
+                return i;
+            }
             i++;
         }
 
-        if (i < arr.length){
-            return i;
-        }else {
-            return -1;
-        }
+        return -1;
     }
 
 
