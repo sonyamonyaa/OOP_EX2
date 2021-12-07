@@ -71,4 +71,12 @@ public class Edge implements api.EdgeData {
     public void setTag(int t) {
         this.tag = t;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || this.getClass() != obj.getClass()) return false;
+        Edge e = (Edge) obj;
+        return this.src == e.getSrc() && this.dest == e.getDest() && this.weight == e.getWeight();
+    }
 }
