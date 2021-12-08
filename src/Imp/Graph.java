@@ -138,7 +138,20 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     @Override
     public double shortestPathDist(int src, int dest) {
-        return 0;
+        List path = shortestPath(src, dest);
+        double sum = 0;
+
+        Iterator<NodeData> it = path.iterator();
+        while (it.hasNext()){
+            dest = it.next().getKey(); //the list is inverted
+            if (it.hasNext()){
+                src = it.next().getKey();
+            }
+
+            sum += getEdge(src, dest).getWeight();
+        }
+
+        return sum;
     }
 
     @Override
@@ -327,7 +340,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
             it = edgeIter(e.getDest());
             while (it.hasNext()){
                 EdgeData son = it.next();
-                if (getNode(son.getDest()).getTag() != 1){
+                if (getNode(son.getDest()).getTag() != 1 || getNode(son.getDest()).getKey() == dest){
                     forward = true;
                     getNode(son.getDest()).setTag(1);
                     S.push(son);
