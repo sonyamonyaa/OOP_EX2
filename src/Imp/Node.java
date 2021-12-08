@@ -87,4 +87,8 @@ public class Node implements api.NodeData {
         boolean ans = this.key == n.getKey() && Double.compare(n.getWeight(), this.weight) == 0 && this.tag == n.getTag();
         return ans && this.geoLocation.equals(n.getLocation()) && this.info.equals(n.getInfo());
     }
+
+    public String toString(){
+        return "" + key;
+    }
 }
