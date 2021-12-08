@@ -263,6 +263,8 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     }
 
     private boolean DFS(){//all reachable?
+        clearTags();
+
         Stack<Integer> s = new Stack<>();
         int start = vertices.getFirst();
         getNode(start).setTag(1);
@@ -292,6 +294,8 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     }
 
     private List<NodeData> DFS(int src, int dest){//shortest path
+        clearTags();
+
         List<NodeData> best = new LinkedList<>();
         List<NodeData> tmp = new LinkedList<>();
         double min = Integer.MAX_VALUE,  curr = 0;
@@ -328,6 +332,8 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     }
 
     private double DFS(int start){
+        clearTags();
+
         double curr = 0;
         double[] dists = new double[nodeSize()];
 
@@ -372,6 +378,12 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
             }
         }
         return max;
+    }
+
+    public void clearTags(){
+        for (int i = 0; i < vertices.length(); i++){
+            getNode(i).setTag(0);
+        }
     }
 
 }
