@@ -1,16 +1,17 @@
 package Imp;
 
 import api.*;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
 
 public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgorithms {
 
@@ -287,10 +288,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
             }
         }
 
-        if (NodesReached == nodeSize()){
-            return true;
-        }
-        return false;
+        return NodesReached == nodeSize();
     }
 
     private List<NodeData> DFS(int src, int dest){//shortest path
@@ -382,7 +380,8 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     public void clearTags(){
         for (int i = 0; i < vertices.length(); i++){
-            getNode(i).setTag(0);
+            if(getNode(i) != null)
+                getNode(i).setTag(0);
         }
     }
 

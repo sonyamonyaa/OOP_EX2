@@ -46,8 +46,7 @@ class GraphTest {
     void copy() {
     }
 
-    @Test //didn't work - need to check after debugging
-    //something to do with DFS()
+    @Test
     void isConnected() {
         g.connect(e1.getSrc(), e1.getDest(), e1.getWeight());
         g.connect(e2.getSrc(), e2.getDest(), e2.getWeight());
