@@ -129,13 +129,25 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     @Override
     public boolean isConnected() {
-        boolean b = DFS();
-        return b && transpose(this).DFS();
+        return DFS() && transpose(this).DFS();
     }
 
     @Override
     public double shortestPathDist(int src, int dest) {
-        return 0;
+        List path = shortestPath(src, dest);
+        double sum = 0;
+
+        Iterator<NodeData> it = path.iterator();
+        while (it.hasNext()){
+            dest = it.next().getKey(); //the list is inverted
+            if (it.hasNext()){
+                src = it.next().getKey();
+            }
+
+            sum += getEdge(src, dest).getWeight();
+        }
+
+        return sum;
     }
 
     @Override
@@ -332,7 +344,17 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         double min = Integer.MAX_VALUE,  curr = 0;
 
         Stack<EdgeData> S = new Stack<>();
-        S.push(new Edge(-1, src, 0));
+        EdgeData start = new Edge(-1, src, 0);
+        S.push(start);
+        getNode(src).setTag(1);
+
+        Iterator<EdgeData> it = edgeIter(src);
+        while (it.hasNext()) {
+            EdgeData son = it.next();
+            getNode(son.getDest()).setTag(1);
+            S.push(son);
+        }
+        tmp.add(getNode(src));
 
         while (! S.isEmpty()){
 
@@ -343,20 +365,25 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
             if (e.getDest() == dest){
                 if (curr < min){
                     min = curr;
-                    best = tmp.subList(0, tmp.size());//copy
+                    best = new LinkedList(tmp);
                 }
             }
 
-            if(getNode(e.getDest()).getTag() != 1){
-                Iterator<EdgeData> it = edgeIter(e.getDest());
-                while (it.hasNext()){
-                    S.push(it.next());
+            boolean forward = false;
+            it = edgeIter(e.getDest());
+            while (it.hasNext()){
+                EdgeData son = it.next();
+                if (getNode(son.getDest()).getTag() != 1 || getNode(son.getDest()).getKey() == dest){
+                    forward = true;
+                    getNode(son.getDest()).setTag(1);
+                    S.push(son);
                 }
-            }else {
+            }
+
+            if (! forward){
                 tmp.remove(0);
+                curr -= e.getWeight();
             }
-
-            getNode(e.getDest()).setTag(1);
         }
 
         return best;
