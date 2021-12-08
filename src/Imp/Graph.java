@@ -152,7 +152,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     @Override
     public List<NodeData> shortestPath(int src, int dest) {
-        return DFS(src, dest);
+        return Dijkstra(src, dest);
     }
 
     @Override
@@ -166,7 +166,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
         for (int i = ind; i < vertices.length(); i++){
             if (getNode(i) != null){
-                double result = DFS(i);
+                double result = DijkstraAll(i);
                 if (result < MinMaxDist){
                     MinMaxDist = result;
                     ind = i;
@@ -336,98 +336,166 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         return NodesReached == nodeSize();
     }
 
-    private List<NodeData> DFS(int src, int dest){//shortest path
+    private List<NodeData> Dijkstra(int src, int dest){
+        if (getNode(src) == null || getNode(dest) == null){
+            return null;
+        }
+        if (src == dest){
+            return new LinkedList<>();
+        }
+
         clearTags();
 
-        List<NodeData> best = new LinkedList<>();
-        List<NodeData> tmp = new LinkedList<>();
-        double min = Integer.MAX_VALUE,  curr = 0;
-
-        Stack<EdgeData> S = new Stack<>();
-        getNode(src).setTag(1);
+        List path = new LinkedList();
+        double[] dists = new double[vertices.length()];
+        int[] prevs = new int[vertices.length()];
+        for (int i = 0; i < dists.length; i++){
+            dists[i] = Integer.MAX_VALUE;
+        }
+        dists[src] = 0;
 
         Iterator<EdgeData> it = edgeIter(src);
-        while (it.hasNext()) {
-            S.push(it.next());
+        double min = Integer.MAX_VALUE;
+        int ind;
+        if (it.hasNext()){
+            EdgeData e = it.next();
+            min = e.getWeight();
+            ind = e.getDest();
+            dists[e.getDest()] = e.getWeight();
+            prevs[e.getDest()] = src;
+        }else {
+            return null;
         }
-        tmp.add(getNode(src));
+        while (it.hasNext()){
+            EdgeData e = it.next();
+            if (e.getWeight() < min){
+                min = e.getWeight();
+                ind = e.getDest();
+            }
+            dists[e.getDest()] = e.getWeight();
+            prevs[e.getDest()] = src;
+        }
+        getNode(src).setTag(1);
+        getNode(ind).setTag(1);
 
-        while (! S.isEmpty()){
+        int curr = ind;
+        boolean finished = false;
+        while (! finished){
 
-            EdgeData e = S.get(S.size() -1);
-            curr += e.getWeight();
-            tmp.add(0, getNode(e.getDest()));
-
-            if (e.getDest() == dest){
-                if (curr < min){
-                    min = curr;
-                    best = new LinkedList(tmp);
+            int lastViseted = curr;
+            min = Integer.MAX_VALUE;
+            it = edgeIter(curr);
+            while (it.hasNext()){
+                EdgeData e = it.next();
+                if (dists[e.getDest()] > dists[e.getSrc()] + e.getWeight()){
+                    dists[e.getDest()] = dists[e.getSrc()] + e.getWeight();
+                    prevs[e.getDest()] = e.getSrc();
                 }
             }
 
-            boolean hasKids = false;
-            if (getNode(e.getDest()).getTag() == 0){
-                it = edgeIter(e.getDest());
-                while (it.hasNext()){
-                    S.push(it.next());
-                    hasKids = true;
+            boolean allDone = true;
+            min = Integer.MAX_VALUE;
+            for (int i = 0; i < dists.length; i++){
+                if (getNode(i).getTag() == 0){
+                    allDone = false;
+                    if (dists[i] <= min){
+                        min = dists[i];
+                        ind = i;
+                    }
                 }
             }
-            if ((getNode(e.getDest()).getTag() != 0) || (! hasKids)){
-                S.pop();
-                tmp.remove(0);
-                curr -= e.getWeight();
-            }
 
-            getNode(e.getDest()).setTag(1);
+            if (allDone){
+                finished = true;
+                break;
+            }else {
+                curr = ind;
+                getNode(ind).setTag(1);
+            }
         }
 
-        return best;
+        if (dists[dest] == Integer.MAX_VALUE){
+            return null;
+        }
+
+        curr = dest;
+        path.add(getNode(dest));
+        while (curr != src){
+            path.add(prevs[curr]);
+            curr = prevs[curr];
+        }
+
+        return path;
     }
 
-    private double DFS(int start){
+    private double DijkstraAll(int src){
+        clearTags();
 
-        double curr = 0;
+        List path = new LinkedList();
         double[] dists = new double[vertices.length()];
-
-        Stack<EdgeData> S = new Stack<>();
-        dists[start] = -1;
-        Iterator<EdgeData> it = edgeIter(start);
-        while (it.hasNext()){
-            S.push(it.next());
+        int[] prevs = new int[vertices.length()];
+        for (int i = 0; i < dists.length; i++){
+            dists[i] = Integer.MAX_VALUE;
         }
+        dists[src] = 0;
 
-        boolean lastWasPoped = false;
-        while (! S.isEmpty()){
+        Iterator<EdgeData> it = edgeIter(src);
+        double min = Integer.MAX_VALUE;
+        int ind;
+        if (it.hasNext()){
+            EdgeData e = it.next();
+            min = e.getWeight();
+            ind = e.getDest();
+            dists[e.getDest()] = e.getWeight();
+            prevs[e.getDest()] = src;
+        }else {
+            return 0;
+        }
+        while (it.hasNext()){
+            EdgeData e = it.next();
+            if (e.getWeight() < min){
+                min = e.getWeight();
+                ind = e.getDest();
+            }
+            dists[e.getDest()] = e.getWeight();
+            prevs[e.getDest()] = src;
+        }
+        getNode(src).setTag(1);
+        getNode(ind).setTag(1);
 
-            EdgeData e = S.get(S.size() -1);
-            if (lastWasPoped){
-                if(dists[e.getDest()] == 0){
-                    curr += e.getWeight();
+        int curr = ind;
+        boolean finished = false;
+        while (! finished){
+
+            int lastViseted = curr;
+            min = Integer.MAX_VALUE;
+            it = edgeIter(curr);
+            while (it.hasNext()){
+                EdgeData e = it.next();
+                if (dists[e.getDest()] > dists[e.getSrc()] + e.getWeight()){
+                    dists[e.getDest()] = dists[e.getSrc()] + e.getWeight();
+                    prevs[e.getDest()] = e.getSrc();
                 }
-            }else {
-                curr += e.getWeight();
             }
 
-            boolean hasKids = false;
-            if (dists[e.getDest()] == 0){
-                it = edgeIter(e.getDest());
-                while (it.hasNext()){
-                    hasKids = true;
-                    S.push(it.next());
+            boolean allDone = true;
+            min = Integer.MAX_VALUE;
+            for (int i = 0; i < dists.length; i++){
+                if (getNode(i).getTag() == 0){
+                    allDone = false;
+                    if (dists[i] <= min){
+                        min = dists[i];
+                        ind = i;
+                    }
                 }
             }
 
-            if ((dists[e.getDest()] != 0)  || (! hasKids)){
-                if (dists[e.getDest()] > curr){
-                    dists[e.getDest()] = curr;
-                }
-                curr -= e.getWeight();
-                S.pop();
-                lastWasPoped = true;
+            if (allDone){
+                finished = true;
+                break;
             }else {
-                dists[e.getDest()] = curr;
-                lastWasPoped = false;
+                curr = ind;
+                getNode(ind).setTag(1);
             }
         }
 
