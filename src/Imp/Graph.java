@@ -7,6 +7,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -23,11 +24,6 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
        And to access a specific node in constant time
 
        The class "synchronises" the states/activities of the 2 structures
-     */
-
-    /*
-    The iterator should throw an exception when the graph has been tempered with (add/connect or remove)
-    I think maybe we need to add/remove only through the iterator but idk - s
      */
 
     private Vertices vertices;
@@ -175,8 +171,45 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean save(String file) {
-        return false;
+        //scan nodes
+        JSONObject nodeDetails = new JSONObject();
+        JSONArray nodeList = new JSONArray();
+        Node n;
+        for (int i = 0; i<nodeSize(); i++) {
+            n = (Node) getNode(i);
+            //each node put details
+            nodeDetails.put("pos",n.getLocation().toString());
+            nodeDetails.put("id",n.getKey());
+            nodeList.add(nodeDetails); //add node objects to list
+        }
+        //scan edges
+        JSONObject edgeDetails = new JSONObject();
+        JSONArray edgeList = new JSONArray();
+        Iterator<EdgeData> edIT = this.edgeIter();
+        Edge edge;
+        while (edIT.hasNext()){
+            edge = (Edge) edIT.next();
+            //each edge put details
+            edgeDetails.put("src", edge.getSrc());
+            edgeDetails.put("w", edge.getWeight());
+            edgeDetails.put("dest", edge.getDest());
+            edgeList.add(edgeDetails); //add edge objects to list
+        }
+
+        //finally - put both list to graph json obj
+        JSONObject graph = new JSONObject();
+        graph.put("Edges",edgeList);
+        graph.put("Nodes",nodeList);
+
+        try (FileWriter jsonFile = new FileWriter(file)) {
+            jsonFile.write(graph.toJSONString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override

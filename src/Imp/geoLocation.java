@@ -30,6 +30,11 @@ public class geoLocation implements api.GeoLocation {
     }
 
     @Override
+    public String toString() {
+        return this.x()+","+this.y()+","+this.z();
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || this.getClass() != obj.getClass()) return false;
