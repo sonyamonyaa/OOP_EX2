@@ -168,7 +168,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         int ind  = vertices.getFirst();
         double MinMaxDist = Integer.MAX_VALUE;
 
-        for (int i = ind; i < vertices.max(); i++){
+        for (int i = ind; i < vertices.length(); i++){
             if (getNode(i) != null){
                 double result = DFS(i);
                 if (result < MinMaxDist){
@@ -311,21 +311,17 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         double min = Integer.MAX_VALUE,  curr = 0;
 
         Stack<EdgeData> S = new Stack<>();
-        EdgeData start = new Edge(-1, src, 0);
-        S.push(start);
         getNode(src).setTag(1);
 
         Iterator<EdgeData> it = edgeIter(src);
         while (it.hasNext()) {
-            EdgeData son = it.next();
-            getNode(son.getDest()).setTag(1);
-            S.push(son);
+            S.push(it.next());
         }
         tmp.add(getNode(src));
 
         while (! S.isEmpty()){
 
-            EdgeData e = S.pop();
+            EdgeData e = S.get(S.size() -1);
             curr += e.getWeight();
             tmp.add(0, getNode(e.getDest()));
 
@@ -336,31 +332,30 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
                 }
             }
 
-            boolean forward = false;
-            it = edgeIter(e.getDest());
-            while (it.hasNext()){
-                EdgeData son = it.next();
-                if (getNode(son.getDest()).getTag() != 1 || getNode(son.getDest()).getKey() == dest){
-                    forward = true;
-                    getNode(son.getDest()).setTag(1);
-                    S.push(son);
+            boolean hasKids = false;
+            if (getNode(e.getDest()).getTag() == 0){
+                it = edgeIter(e.getDest());
+                while (it.hasNext()){
+                    S.push(it.next());
+                    hasKids = true;
                 }
             }
-
-            if (! forward){
+            if ((getNode(e.getDest()).getTag() != 0) || (! hasKids)){
+                S.pop();
                 tmp.remove(0);
                 curr -= e.getWeight();
             }
+
+            getNode(e.getDest()).setTag(1);
         }
 
         return best;
     }
 
     private double DFS(int start){
-        clearTags();
 
         double curr = 0;
-        double[] dists = new double[nodeSize()];
+        double[] dists = new double[vertices.length()];
 
         Stack<EdgeData> S = new Stack<>();
         dists[start] = -1;
@@ -369,27 +364,38 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
             S.push(it.next());
         }
 
+        boolean lastWasPoped = false;
         while (! S.isEmpty()){
 
-            EdgeData e = S.pop();
-            curr += e.getWeight();
+            EdgeData e = S.get(S.size() -1);
+            if (lastWasPoped){
+                if(dists[e.getDest()] == 0){
+                    curr += e.getWeight();
+                }
+            }else {
+                curr += e.getWeight();
+            }
 
+            boolean hasKids = false;
             if (dists[e.getDest()] == 0){
                 it = edgeIter(e.getDest());
                 while (it.hasNext()){
+                    hasKids = true;
                     S.push(it.next());
                 }
             }
 
-            if (dists[e.getDest()] != 0){
+            if ((dists[e.getDest()] != 0)  || (! hasKids)){
                 if (dists[e.getDest()] > curr){
                     dists[e.getDest()] = curr;
-                    curr -= e.getWeight();
                 }
+                curr -= e.getWeight();
+                S.pop();
+                lastWasPoped = true;
             }else {
                 dists[e.getDest()] = curr;
+                lastWasPoped = false;
             }
-
         }
 
         return max(dists);
