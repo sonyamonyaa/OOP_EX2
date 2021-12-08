@@ -7,8 +7,5 @@ class GraphJsonTest {
         Graph graph = new Graph();
         graph.load(Path);
         graph.save("data/temp.json");
-
-
-
     }
 }
