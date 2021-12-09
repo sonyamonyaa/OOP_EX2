@@ -119,12 +119,26 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     @Override
     public DirectedWeightedGraph getGraph() {
-        return null;
+        return this;
     }
 
     @Override
     public DirectedWeightedGraph copy() {
-        return null;
+        Graph g = new Graph(this.nodeSize());
+        Iterator<NodeData>  it = nodeIter();
+        while (it.hasNext()){
+            NodeData n = it.next();
+            if (n != null){
+                g.addNode(n);
+                Iterator<EdgeData> it2 = edgeIter(n.getKey());
+                while (it2.hasNext()){
+                    EdgeData e = it2.next();
+                    g.connect(e.getSrc(), e.getDest(), e.getWeight());
+                }
+            }
+        }
+
+        return g;
     }
 
     @Override
