@@ -31,7 +31,7 @@ public class GraphPanel extends JPanel {
         Edge edge;
         for (Iterator<NodeData> n = this.graph.nodeIter(); n.hasNext(); ) {
             node = (Node) n.next();
-            g.setColor(new Color(29, 83, 138));
+            g.setColor(new Color(28, 173, 105, 255));
             x1 = node.getLocation().x();
             y1 = node.getLocation().y();
             g.fillOval((int) x1-5, (int) y1-5, 5, 5);

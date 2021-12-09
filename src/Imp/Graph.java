@@ -135,19 +135,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     @Override
     public double shortestPathDist(int src, int dest) {
         List path = shortestPath(src, dest);
-        double sum = 0;
-
-        Iterator<NodeData> it = path.iterator();
-        while (it.hasNext()){
-            dest = it.next().getKey(); //the list is inverted
-            if (it.hasNext()){
-                src = it.next().getKey();
-            }
-
-            sum += getEdge(src, dest).getWeight();
-        }
-
-        return sum;
+        return weightOfPath(path);
     }
 
     @Override
@@ -179,7 +167,53 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     @Override
     public List<NodeData> tsp(List<NodeData> cities) {
-        return null;
+        if (cities.size() < 2){
+            return cities;
+        }
+
+        List ans = new LinkedList();
+        Iterator<NodeData> it = cities.iterator();
+        NodeData curr = it.next();
+        NodeData next = it.next();
+
+        boolean done = false;
+        while (! done){
+            List<NodeData> tmp = Dijkstra(curr.getKey(), next.getKey());
+
+            if (tmp == null){
+                Iterator<NodeData> it2 = cities.iterator();
+                while (it2.hasNext()){
+                    NodeData other = it2.next();
+                    if (other != curr && other != next){
+                        tmp = Dijkstra(curr.getKey(), other.getKey());
+                        if (tmp != null){
+                            next = other;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            for (NodeData node : invert(tmp)){
+                cities.remove(node);
+                if (ans.size() > 0){
+                    if (node != ans.get(0)){
+                        ans.add(0, node);
+                    }
+                }else {
+                    ans.add(0, node);
+                }
+            }
+            curr = tmp.get(0);
+
+            if (cities.size() == 0){
+                done = true;
+            }else {
+                next = cities.get(0);
+            }
+        }
+
+        return ans;
     }
 
     @Override
@@ -421,7 +455,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         curr = dest;
         path.add(getNode(dest));
         while (curr != src){
-            path.add(prevs[curr]);
+            path.add(getNode(prevs[curr]));
             curr = prevs[curr];
         }
 
@@ -519,4 +553,30 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         }
     }
 
+    private double weightOfPath(List<NodeData> path){
+        double sum = 0;
+        int dest = path.get(0).getKey(), src = path.get(path.size() -1).getKey();
+
+        Iterator<NodeData> it = path.iterator();
+        while (it.hasNext()){
+            dest = it.next().getKey(); //the list is inverted
+            if (it.hasNext()){
+                src = it.next().getKey();
+            }
+
+            sum += getEdge(src, dest).getWeight();
+        }
+
+        return sum;
+    }
+
+    private static List<NodeData> invert(List<NodeData> l){
+        List ans = new LinkedList();
+        Iterator it = l.iterator();
+        while (it.hasNext()){
+            ans.add(0, it.next());
+        }
+
+        return ans;
+    }
 }
