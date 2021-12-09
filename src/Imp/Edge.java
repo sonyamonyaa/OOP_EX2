@@ -79,4 +79,13 @@ public class Edge implements api.EdgeData {
         Edge e = (Edge) obj;
         return this.src == e.getSrc() && this.dest == e.getDest() && this.weight == e.getWeight();
     }
+
+    @Override
+    public String toString() {
+        return "Edge{" +
+                "src=" + src +
+                ", dest=" + dest +
+                ", weight=" + weight +
+                '}';
+    }
 }
