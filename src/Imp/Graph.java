@@ -119,12 +119,26 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     @Override
     public DirectedWeightedGraph getGraph() {
-        return null;
+        return this;
     }
 
     @Override
     public DirectedWeightedGraph copy() {
-        return null;
+        Graph g = new Graph(this.nodeSize());
+        Iterator<NodeData>  it = nodeIter();
+        while (it.hasNext()){
+            NodeData n = it.next();
+            if (n != null){
+                g.addNode(n);
+                Iterator<EdgeData> it2 = edgeIter(n.getKey());
+                while (it2.hasNext()){
+                    EdgeData e = it2.next();
+                    g.connect(e.getSrc(), e.getDest(), e.getWeight());
+                }
+            }
+        }
+
+        return g;
     }
 
     @Override
@@ -555,13 +569,19 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     private double weightOfPath(List<NodeData> path){
         double sum = 0;
-        int dest = path.get(0).getKey(), src = path.get(path.size() -1).getKey();
+        if (path.size() < 2){
+            return sum;
+        }
 
         Iterator<NodeData> it = path.iterator();
+        int src = it.next().getKey(), dest;
+
         while (it.hasNext()){
-            dest = it.next().getKey(); //the list is inverted
+            dest = src; //the list is inverted
             if (it.hasNext()){
                 src = it.next().getKey();
+            }else {
+                break;
             }
 
             sum += getEdge(src, dest).getWeight();
