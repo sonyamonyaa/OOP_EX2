@@ -569,13 +569,19 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
     private double weightOfPath(List<NodeData> path){
         double sum = 0;
-        int dest = path.get(0).getKey(), src = path.get(path.size() -1).getKey();
+        if (path.size() < 2){
+            return sum;
+        }
 
         Iterator<NodeData> it = path.iterator();
+        int src = it.next().getKey(), dest;
+
         while (it.hasNext()){
-            dest = it.next().getKey(); //the list is inverted
+            dest = src; //the list is inverted
             if (it.hasNext()){
                 src = it.next().getKey();
+            }else {
+                break;
             }
 
             sum += getEdge(src, dest).getWeight();
