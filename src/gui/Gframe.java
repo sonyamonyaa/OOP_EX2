@@ -10,9 +10,10 @@ import java.awt.event.ActionListener;
 
 public class Gframe extends JFrame implements ActionListener {
     GraphPanel graphPanel;
-    UpperPanel filePanel;
+    FilePanel filePanel;
+    EditPanel editPanel;
     private Graph graph;
-    JButton save, load, run, add, remove, connect, disconnect;
+    JButton save, load, run, add, remove, connect, disconnect,confirm;
     JTextField nameField;
     JComboBox jsonBox, algoBox;
 
@@ -26,17 +27,22 @@ public class Gframe extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
         graphPanel = new GraphPanel(this.graph);
 
-        this.upperPanelSetUp();
-        filePanel = new UpperPanel(this.graph, save, load, run, nameField, jsonBox, algoBox);
+        this.setFilePanel();
+        filePanel = new FilePanel(this.graph, save, load, run, nameField, jsonBox, algoBox);
         filePanel.setPreferredSize(new Dimension(600, 50));
 
+        this.setEditPanel();
+        editPanel = new EditPanel(this.graph,confirm,add, remove, connect, disconnect);
+        editPanel.setPreferredSize(new Dimension(150,50));
+
+        this.add(editPanel,BorderLayout.WEST);
         this.add(filePanel, BorderLayout.NORTH);
         this.add(graphPanel, BorderLayout.CENTER);
         this.pack();
         this.setVisible(true);
     }
 
-    private void upperPanelSetUp() {
+    private void setFilePanel() {
         String[] files, algo;
         //save button
         save = new JButton("Save");
@@ -65,21 +71,24 @@ public class Gframe extends JFrame implements ActionListener {
         algoBox.setSelectedIndex(0);
     }
 
-    private void leftPanelSetup() {
+    private void setEditPanel() {
         add = new JButton("Add Node");
         remove = new JButton("Remove Node");
         connect = new JButton("Add Edge");
         disconnect = new JButton("Remove Edge");
+        confirm = new JButton("Confirm");
         add.addActionListener(this);
         remove.addActionListener(this);
         connect.addActionListener(this);
         disconnect.addActionListener(this);
+        confirm.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == load) {
-            repaint();
+        boolean modified = e.getSource() == load || e.getSource() == confirm;
+        if (modified) {
+            graphPanel.repaint();
         }
     }
 

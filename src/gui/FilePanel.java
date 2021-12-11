@@ -9,12 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class UpperPanel extends JPanel implements ActionListener {
+public class FilePanel extends JPanel implements ActionListener {
     private Graph graph;
     private JButton saveButton,loadButton,runButton;
     private JTextField nameField;
     private JComboBox jsonBox, algoBox;
-    UpperPanel(Graph graph,JButton saveButton,JButton loadButton,JButton runButton,JTextField nameField,JComboBox jsonBox,JComboBox algoBox) {
+    FilePanel(Graph graph, JButton saveButton, JButton loadButton, JButton runButton, JTextField nameField, JComboBox jsonBox, JComboBox algoBox) {
         this.graph = graph;
         this.saveButton = saveButton;
         this.loadButton = loadButton;
@@ -40,10 +40,10 @@ public class UpperPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==saveButton){
             this.graph.save("data/"+nameField.getText());
+            //file chooser
         }
         if(e.getSource()==loadButton){
             this.graph.load("data/"+ jsonBox.getSelectedItem());
-            System.out.println("loaded");
         }
         if (e.getSource()==runButton){
             System.out.println("hasn't been implemented yet");
