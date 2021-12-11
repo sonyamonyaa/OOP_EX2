@@ -12,7 +12,7 @@ public class Gframe extends JFrame implements ActionListener {
     GraphPanel graphPanel;
     UpperPanel filePanel;
     private Graph graph;
-    JButton save, load, run;
+    JButton save, load, run, add, remove, connect, disconnect;
     JTextField nameField;
     JComboBox jsonBox, algoBox;
 
@@ -27,46 +27,58 @@ public class Gframe extends JFrame implements ActionListener {
         graphPanel = new GraphPanel(this.graph);
 
         this.upperPanelSetUp();
-        filePanel = new UpperPanel(this.graph,save,load,run,nameField,jsonBox,algoBox);
-        filePanel.setPreferredSize(new Dimension(600,50));
+        filePanel = new UpperPanel(this.graph, save, load, run, nameField, jsonBox, algoBox);
+        filePanel.setPreferredSize(new Dimension(600, 50));
 
-        this.add(filePanel,BorderLayout.NORTH);
-        this.add(graphPanel,BorderLayout.CENTER);
+        this.add(filePanel, BorderLayout.NORTH);
+        this.add(graphPanel, BorderLayout.CENTER);
         this.pack();
         this.setVisible(true);
     }
 
-    private void upperPanelSetUp(){
-            String[] files, algo;
-            //save button
-            save = new JButton("Save");
-            save.addActionListener(this);
+    private void upperPanelSetUp() {
+        String[] files, algo;
+        //save button
+        save = new JButton("Save");
+        save.addActionListener(this);
 
-            nameField = new JTextField();
-            nameField.setPreferredSize(new Dimension(100, 25));
-            nameField.setFont(new Font("Consolas", Font.PLAIN, 15));
-            nameField.setForeground(Color.black);
-            nameField.setBackground(Color.white);
-            nameField.setCaretColor(Color.white);
-            nameField.setText("temp");
+        nameField = new JTextField();
+        nameField.setPreferredSize(new Dimension(100, 25));
+        nameField.setFont(new Font("Consolas", Font.PLAIN, 15));
+        nameField.setForeground(Color.black);
+        nameField.setBackground(Color.white);
+        nameField.setCaretColor(Color.white);
+        nameField.setText("temp");
 
-            //Load button
-            load = new JButton("Load");
-            load.addActionListener(this);
-            files = new String[]{"G1.json", "G2.json", "G3.json"};
-            jsonBox = new JComboBox(files);
-            jsonBox.setSelectedIndex(0);
+        //Load button
+        load = new JButton("Load");
+        load.addActionListener(this);
+        files = new String[]{"G1.json", "G2.json", "G3.json"};
+        jsonBox = new JComboBox(files);
+        jsonBox.setSelectedIndex(0);
 
-            //Run button
-            run = new JButton("Run");
-            run.addActionListener(this);
-            algo = new String[]{"Is Connected", "Shortest Path Distance","Center","TSP"};
-            algoBox = new JComboBox(algo);
-            algoBox.setSelectedIndex(0);
-        }
+        //Run button
+        run = new JButton("Run");
+        run.addActionListener(this);
+        algo = new String[]{"Is Connected", "Shortest Path Distance", "Center", "TSP"};
+        algoBox = new JComboBox(algo);
+        algoBox.setSelectedIndex(0);
+    }
+
+    private void leftPanelSetup() {
+        add = new JButton("Add Node");
+        remove = new JButton("Remove Node");
+        connect = new JButton("Add Edge");
+        disconnect = new JButton("Remove Edge");
+        add.addActionListener(this);
+        remove.addActionListener(this);
+        connect.addActionListener(this);
+        disconnect.addActionListener(this);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == load){
+        if (e.getSource() == load) {
             repaint();
         }
     }

@@ -24,6 +24,9 @@ public class UpperPanel extends JPanel implements ActionListener {
         this.jsonBox = jsonBox;
 
         this.setLayout(new FlowLayout());
+        this.saveButton.addActionListener(this);
+        this.loadButton.addActionListener(this);
+        this.runButton.addActionListener(this);
 
         this.add(this.saveButton);
         this.add(this.nameField);

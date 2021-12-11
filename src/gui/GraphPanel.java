@@ -16,7 +16,7 @@ import java.util.Iterator;
 public class GraphPanel extends JPanel {
     private Graph graph;
     private double rangeX, rangeY,minX,minY,maxX,maxY;
-    //private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+    private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     private int width;
     private int height;
 
@@ -24,7 +24,7 @@ public class GraphPanel extends JPanel {
         super();
         this.setBackground(new Color(153, 191, 224)); //change color of background
         this.graph = (Graph) graph;
-        this.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
+        this.setPreferredSize(new Dimension((int) size.getWidth()-200, (int) size.getHeight() -200));
     }
     public void paint(Graphics g){
         setScales();
