@@ -9,10 +9,7 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgorithms {
 
@@ -195,12 +192,10 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
             List<NodeData> tmp = Dijkstra(curr.getKey(), next.getKey());
 
             if (tmp == null){
-                Iterator<NodeData> it2 = cities.iterator();
-                while (it2.hasNext()){
-                    NodeData other = it2.next();
-                    if (other != curr && other != next){
+                for (NodeData other : cities) {
+                    if (other != curr && other != next) {
                         tmp = Dijkstra(curr.getKey(), other.getKey());
-                        if (tmp != null){
+                        if (tmp != null) {
                             next = other;
                             break;
                         }
@@ -403,7 +398,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         dists[src] = 0;
 
         Iterator<EdgeData> it = edgeIter(src);
-        double min = Integer.MAX_VALUE;
+        double min;
         int ind;
         if (it.hasNext()){
             EdgeData e = it.next();
@@ -430,8 +425,6 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         boolean finished = false;
         while (! finished){
 
-            int lastViseted = curr;
-            min = Integer.MAX_VALUE;
             it = edgeIter(curr);
             while (it.hasNext()){
                 EdgeData e = it.next();
@@ -455,7 +448,6 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
             if (allDone){
                 finished = true;
-                break;
             }else {
                 curr = ind;
                 getNode(ind).setTag(1);
@@ -479,7 +471,6 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     private double DijkstraAll(int src){
         clearTags();
 
-        List path = new LinkedList();
         double[] dists = new double[vertices.length()];
         int[] prevs = new int[vertices.length()];
         for (int i = 0; i < dists.length; i++){
@@ -488,7 +479,7 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         dists[src] = 0;
 
         Iterator<EdgeData> it = edgeIter(src);
-        double min = Integer.MAX_VALUE;
+        double min;
         int ind;
         if (it.hasNext()){
             EdgeData e = it.next();
@@ -515,7 +506,6 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
         boolean finished = false;
         while (! finished){
 
-            int lastViseted = curr;
             min = Integer.MAX_VALUE;
             it = edgeIter(curr);
             while (it.hasNext()){
@@ -540,7 +530,6 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
 
             if (allDone){
                 finished = true;
-                break;
             }else {
                 curr = ind;
                 getNode(ind).setTag(1);
