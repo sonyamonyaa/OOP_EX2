@@ -1,8 +1,12 @@
 package gui;
 
+import Imp.Edge;
 import Imp.Graph;
+import Imp.Node;
+import Imp.geoLocation;
 import api.DirectedWeightedGraph;
 import api.EdgeData;
+import api.GeoLocation;
 import api.NodeData;
 
 import javax.swing.*;
@@ -11,7 +15,7 @@ import java.util.Iterator;
 
 public class GraphPanel extends JPanel {
     private Graph graph;
-    //private double scaleX, scaleY;
+    private double rangeX, rangeY,minX,minY,maxX,maxY;
     //private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     private int width;
     private int height;
@@ -22,52 +26,88 @@ public class GraphPanel extends JPanel {
         this.graph = (Graph) graph;
         this.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
     }
-//    private void setScales(){
-//        double minX,minY,maxX,maxY;
-//        minX = minY = Integer.MAX_VALUE;
-//        maxX = maxY = Integer.MIN_VALUE;
-//        Iterator<NodeData> itn = graph.nodeIter();
-//        while (itn.hasNext()) {
-//            NodeData curr = itn.next();
-//            GeoLocation g = curr.getLocation();
-//            if(g.x() < minX) {minX = g.x();}
-//            if(g.y() < minY) {minY = g.y();}
-//            if(g.x() > maxX) {maxX = g.x();}
-//            if(g.y() > maxY) {maxY = g.y();}
-//        }
-//        scaleX = Math.abs(maxX - minX);
-//        scaleY = Math.abs(maxY-minY);
-//    }
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        width = getWidth();
-        height = getHeight();
-        g.setFont(new Font("no name", Font.BOLD, 10));
-        Iterator<EdgeData> ite = graph.edgeIter();
-        while (ite.hasNext()) {
-            EdgeData e = ite.next();
-            g.setColor(Color.BLUE);
-            double srcX = (graph.getNode(e.getSrc()).getLocation().x() * 20000) % 1000;
-            double srcY = (graph.getNode(e.getSrc()).getLocation().y() * 20000) % 1000;
-            double destX = (graph.getNode(e.getDest()).getLocation().x() * 10000) % 1000;
-            double destY = (graph.getNode(e.getDest()).getLocation().y() * 10000) % 1000;
-            drawArrowLine(g,(int) srcX, (int) srcY, (int) destX, (int) destY,8,8);
-            Double weight = e.getWeight();
-            String wS = weight.toString().substring(0,weight.toString().indexOf(".")+4);
-            g.setColor(Color.black);
-            g.drawString("w:" + wS, (int) (srcX + destX) / 2, (int) (srcY+ destY)/2) ;
+    public void paint(Graphics g){
+        setScales();
+        paintComponents(g);
+    }
+
+    public void paintComponents(Graphics g) {
+        Graph gg = (Graph) graph.getGraph();
+        Iterator<NodeData> itern = gg.nodeIter();
+        while (itern.hasNext()) {
+            Node node = (Node) itern.next();
+            Iterator<EdgeData> itre = gg.edgeIter(node.getKey());
+            while (itre.hasNext()) {
+                Edge e = (Edge) itre.next();
+                g.setColor(Color.gray);
+                drawEdge(e, g);
+            }
+            g.setColor(Color.blue);
+            drawNode(node, 5, g);
         }
+    }
+    private void drawNode(Node n, int r, Graphics g) {
+        Graphics2D graphics2D = (Graphics2D) g;
+        g.setFont(new Font("name", Font.BOLD,15));
+        geoLocation pos = (geoLocation) n.getLocation();
+        geoLocation fp =  scale2frame(pos);
+        g.fillOval((int)fp.x()-r,(int)fp.y()-r,10,10);
+        g.drawString("id " + n.getKey(), (int) fp.x(), (int) fp.y() - 4 * r);
+    }
+
+    private void drawEdge(Edge e, Graphics g) {
+        Graph gg = (Graph) graph.getGraph();
+        geoLocation src = (geoLocation) gg.getNode(e.getSrc()).getLocation();
+        geoLocation dest = (geoLocation) gg.getNode(e.getDest()).getLocation();
+        geoLocation s = scale2frame(src);
+        geoLocation d = scale2frame(dest);
+        drawArrowLine(g,(int) s.x(), (int) s.y(), (int) d.x(), (int) d.y(),8,8);
+        double w = e.getWeight();
+        String ws = Double.toString(w).substring(0, Double.toString(w).indexOf(".")+4);
+        g.drawString("w:" + ws, (int) (s.x() + d.x())/2, (int) (s.y() + d.y())/2  - 4);
+    }
+    private void setScales() {
+        minX = minY = Integer.MAX_VALUE;
+        maxX = maxY = Integer.MIN_VALUE;
         Iterator<NodeData> itn = graph.nodeIter();
         while (itn.hasNext()) {
             NodeData curr = itn.next();
-            int x = (int) (curr.getLocation().x() * 20000) % 1000;
-            int y = (int) (curr.getLocation().y() * 10000) % 1000;
-            g.setColor(Color.DARK_GRAY);
-            g.fillOval(x - 5, y - 5, 10, 10);
-            g.setColor(Color.black);
-            g.drawString("id " + curr.getKey(), x + 5, y + 5);
+            GeoLocation g = curr.getLocation();
+            if (g.x() < minX) {
+                minX = g.x();
+            }
+            if (g.y() < minY) {
+                minY = g.y();
+            }
+            if (g.x() > maxX) {
+                maxX = g.x();
+            }
+            if (g.y() > maxY) {
+                maxY = g.y();
+            }
         }
+        rangeX = Math.abs(maxX - minX);
+        rangeY = Math.abs(maxY - minY);
     }
+
+    private double fromScale(double p, double range, double min) {
+            double ans = p - min;
+            ans /= range;
+            return ans;
+        }
+        private double toScale(double p, double range, double min) {
+            return min + p * range;
+        }
+    private geoLocation scale2frame(geoLocation p) {
+        //graph
+        double fx = fromScale(p.x(),rangeX,minX);
+        double fy = fromScale(p.y(),rangeY,minY);
+        //frame
+        fx = toScale(fx,getWidth()*0.8,150);
+		fy = toScale(fy,getHeight()*0.8,50);
+		geoLocation ans = new geoLocation(fx,fy,0);
+		return ans;
+	}
 
     /*
      * https://stackoverflow.com/a/27461352
