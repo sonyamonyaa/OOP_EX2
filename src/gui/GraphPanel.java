@@ -12,6 +12,7 @@ import api.NodeData;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Iterator;
+import java.util.List;
 
 public class GraphPanel extends JPanel {
     private Graph graph;
@@ -108,7 +109,22 @@ public class GraphPanel extends JPanel {
 		geoLocation ans = new geoLocation(fx,fy,0);
 		return ans;
 	}
-
+    public void paintPath(List<NodeData> path){
+        Node n0,n1;
+        Edge e;
+        int k0,k1;
+        Graphics g = this.getGraphics();
+        for(int i = 1; i <path.size();i++){
+            n0 = (Node) path.get(i-1);
+            g.setColor(Color.green);
+            drawNode(n0,5,g);
+            n1 = (Node) path.get(i);
+            k0 = n0.getKey();
+            k1 = n1.getKey();
+            e = (Edge) this.graph.getEdge(k0,k1);
+            drawEdge(e,g);
+        }
+    }
     /*
      * https://stackoverflow.com/a/27461352
      *

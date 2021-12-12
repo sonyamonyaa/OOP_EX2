@@ -2,6 +2,8 @@ import Imp.Graph;
 import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
 
+import javax.swing.*;
+
 /**
  * This class is the main class for Ex2 - your implementation will be tested using this class.
  */
@@ -55,15 +57,11 @@ public class Ex2 {
     }
 
     public static void main(String[] args) {
-//        JFrame mainFrame = new JFrame();
-//        mainFrame.setSize(WIDTH, HEIGHT);
-//        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        GraphPanel paintPanel = new GraphPanel(getGrapg("data/G3.json"));
-//        Panelmain panelmain = new Panelmain();
-//        paintPanel.setPreferredSize(new Dimension(Ex2.WIDTH, (Ex2.HEIGHT * 3) / 4));
-//        mainFrame.getContentPane().add(paintPanel, BorderLayout.CENTER);
-//        mainFrame.add(panelmain, BorderLayout.SOUTH);
-//        mainFrame.setVisible(true);
+        String nodes = JOptionPane.showInputDialog("Please enter \"source,destination\" ");
+            //int src = Integer.parseInt(nodes.substring(0,nodes.indexOf(",")-1));
+            //int dest = Integer.parseInt(nodes.substring(nodes.indexOf(",")+1));
+        System.out.println("src:"+nodes.substring(0,nodes.indexOf(",")));
+        System.out.println("dest:"+nodes.substring(nodes.indexOf(",")+1));
     }
 }
 

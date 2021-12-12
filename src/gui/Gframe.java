@@ -2,16 +2,19 @@ package gui;
 
 import Imp.Graph;
 import api.DirectedWeightedGraph;
+import api.NodeData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class Gframe extends JFrame implements ActionListener {
     GraphPanel graphPanel;
     FilePanel filePanel;
     EditPanel editPanel;
+    InfoPanel infoPanel;
     private Graph graph;
     JButton save, load, run, add, remove, connect, disconnect,confirm;
     JTextField nameField;
@@ -25,6 +28,7 @@ public class Gframe extends JFrame implements ActionListener {
         this.setSize(size);
         this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
+
         graphPanel = new GraphPanel(this.graph);
 
         this.setFilePanel();
@@ -35,6 +39,10 @@ public class Gframe extends JFrame implements ActionListener {
         editPanel = new EditPanel(this.graph,confirm,add, remove, connect, disconnect);
         editPanel.setPreferredSize(new Dimension(150,50));
 
+        infoPanel = new InfoPanel(this.graph);
+        infoPanel.setPreferredSize(new Dimension(150,50));
+
+        this.add(infoPanel,BorderLayout.EAST);
         this.add(editPanel,BorderLayout.WEST);
         this.add(filePanel, BorderLayout.NORTH);
         this.add(graphPanel, BorderLayout.CENTER);
@@ -66,7 +74,7 @@ public class Gframe extends JFrame implements ActionListener {
         //Run button
         run = new JButton("Run");
         run.addActionListener(this);
-        algo = new String[]{"Is Connected", "Shortest Path Distance", "Center", "TSP"};
+        algo = new String[]{"Is Connected", "Shortest Path Distance","Shortest Path", "Center", "TSP"};
         algoBox = new JComboBox(algo);
         algoBox.setSelectedIndex(0);
     }
@@ -88,7 +96,19 @@ public class Gframe extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         boolean modified = e.getSource() == load || e.getSource() == confirm;
         if (modified) {
-            graphPanel.repaint();
+            repaint();
+        }
+        if(e.getSource()==run && this.algoBox.getSelectedIndex() == 2)
+        {
+            String nodes = JOptionPane.showInputDialog("Please enter \"source destination\" ");
+            try {
+                int src = Integer.parseInt(nodes.substring(0, nodes.indexOf(" ")));
+                int dest = Integer.parseInt(nodes.substring(nodes.indexOf(" ") + 1));
+                List<NodeData> path = this.graph.shortestPath(src, dest);
+                graphPanel.paintPath(path);
+            } catch (NumberFormatException numberFormatException) {
+                numberFormatException.printStackTrace();
+            }
         }
     }
 

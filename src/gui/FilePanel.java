@@ -46,7 +46,24 @@ public class FilePanel extends JPanel implements ActionListener {
             this.graph.load("data/"+ jsonBox.getSelectedItem());
         }
         if (e.getSource()==runButton){
-            System.out.println("hasn't been implemented yet");
+            //"Is Connected", "Shortest Path Distance", "Center", "TSP"
+            int alg = algoBox.getSelectedIndex();
+            switch (alg){
+                case 0://is connected
+                    JOptionPane.showMessageDialog(this, this.graph.isConnected(), "Is Connected?", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                case 1://shortest path dist
+                    String nodes = JOptionPane.showInputDialog("Please enter \"source destination\" ");
+                    try {
+                        int src = Integer.parseInt(nodes.substring(0,nodes.indexOf(" ")));
+                        int dest = Integer.parseInt(nodes.substring(nodes.indexOf(" ")+1));
+                        double dist = this.graph.shortestPathDist(src,dest);
+                        JOptionPane.showMessageDialog(this, src + " -> " + dest + "\nworth " + dist, "Shortest Path distance", JOptionPane.INFORMATION_MESSAGE);
+                    } catch (NumberFormatException numberFormatException) {
+                        numberFormatException.printStackTrace();
+                    }
+
+            }
         }
     }
 }
