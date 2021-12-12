@@ -1,7 +1,7 @@
 package gui;
 
 import Imp.Graph;
-import api.DirectedWeightedGraph;
+import api.DirectedWeightedGraphAlgorithms;
 import api.NodeData;
 
 import javax.swing.*;
@@ -17,11 +17,10 @@ public class Gframe extends JFrame implements ActionListener {
     EditPanel editPanel;
     InfoPanel infoPanel;
     private Graph graph;
-    JButton save, load, run, add, remove, connect, disconnect,confirm;
-    JTextField nameField;
+    JButton save, load, run, add, remove, connect, disconnect,updateB;
     JComboBox jsonBox, algoBox;
 
-    Gframe(DirectedWeightedGraph graph) {
+    public Gframe(DirectedWeightedGraphAlgorithms graph) {
         super();
         this.graph = (Graph) graph;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,12 +33,12 @@ public class Gframe extends JFrame implements ActionListener {
 
 
         this.setFilePanel();
-        filePanel = new FilePanel(this.graph, save, load, run, nameField, jsonBox, algoBox);
+        filePanel = new FilePanel(this.graph, save, load, run, jsonBox, algoBox);
         filePanel.setPreferredSize(new Dimension(600, 50));
         filePanel.setBackground(Color.gray); //change color of background
 
         this.setEditPanel();
-        editPanel = new EditPanel(this.graph,confirm,add, remove, connect, disconnect);
+        editPanel = new EditPanel(this.graph,add, remove, connect, disconnect);
         editPanel.setPreferredSize(new Dimension(150,50));
         editPanel.setBackground(Color.lightGray);
 
@@ -55,19 +54,15 @@ public class Gframe extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
+//    private void setInfoPanel(){
+//        updateB = new JButton("Update");
+//        updateB.addActionListener(this);
+//    }
     private void setFilePanel() {
         String[] files, algo;
         //save button
         save = new JButton("Save");
         save.addActionListener(this);
-
-        nameField = new JTextField();
-        nameField.setPreferredSize(new Dimension(100, 25));
-        nameField.setFont(new Font("Consolas", Font.PLAIN, 15));
-        nameField.setForeground(Color.black);
-        nameField.setBackground(Color.white);
-        nameField.setCaretColor(Color.white);
-        nameField.setText("temp");
 
         //Load button
         load = new JButton("Load");
@@ -89,18 +84,15 @@ public class Gframe extends JFrame implements ActionListener {
         remove = new JButton("Remove Node");
         connect = new JButton("Add Edge");
         disconnect = new JButton("Remove Edge");
-        confirm = new JButton("Confirm");
         add.addActionListener(this);
         remove.addActionListener(this);
         connect.addActionListener(this);
         disconnect.addActionListener(this);
-        confirm.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        boolean modified = e.getSource() == load || e.getSource() == confirm;
-        if (modified) {
+        if (e.getSource() == load || e.getActionCommand() == "Update") {
             repaint();
         }
         if (e.getSource() == run) {
