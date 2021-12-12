@@ -23,7 +23,7 @@ public class GraphPanel extends JPanel {
 
     public GraphPanel(DirectedWeightedGraph graph) {
         super();
-        this.setBackground(new Color(153, 191, 224)); //change color of background
+
         this.graph = (Graph) graph;
         this.setPreferredSize(new Dimension((int) size.getWidth()-200, (int) size.getHeight() -200));
     }

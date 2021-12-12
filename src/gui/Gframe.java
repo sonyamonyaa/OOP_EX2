@@ -31,22 +31,26 @@ public class Gframe extends JFrame implements ActionListener {
 
         graphPanel = new GraphPanel(this.graph);
 
+
         this.setFilePanel();
         filePanel = new FilePanel(this.graph, save, load, run, nameField, jsonBox, algoBox);
         filePanel.setPreferredSize(new Dimension(600, 50));
+        filePanel.setBackground(Color.gray); //change color of background
 
         this.setEditPanel();
         editPanel = new EditPanel(this.graph,confirm,add, remove, connect, disconnect);
         editPanel.setPreferredSize(new Dimension(150,50));
+        editPanel.setBackground(Color.lightGray);
 
         infoPanel = new InfoPanel(this.graph);
         infoPanel.setPreferredSize(new Dimension(150,50));
+        infoPanel.setBackground(Color.lightGray);
 
         this.add(infoPanel,BorderLayout.EAST);
         this.add(editPanel,BorderLayout.WEST);
         this.add(filePanel, BorderLayout.NORTH);
         this.add(graphPanel, BorderLayout.CENTER);
-        this.pack();
+        //this.pack();
         this.setVisible(true);
     }
 

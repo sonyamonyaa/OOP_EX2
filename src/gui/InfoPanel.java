@@ -20,12 +20,12 @@ public class InfoPanel extends JPanel implements ActionListener {
         nodeSize = new JLabel();
         edgeSize = new JLabel();
 
-        MC.setBounds(50, 50, 250, 20);
-        nodeSize.setBounds(50, 100, 250, 20);
-        edgeSize.setBounds(50, 150, 250, 20);
+        MC.setBounds(20, 50, 250, 20);
+        nodeSize.setBounds(20, 100, 250, 20);
+        edgeSize.setBounds(20, 150, 250, 20);
 
         update = new JButton("Update");
-        update.setBounds(50, 200, 95, 30);
+        update.setBounds(20, 200, 95, 30);
         update.addActionListener(this);
 
         MC.setText("Mode Count: " + this.graph.getMC());

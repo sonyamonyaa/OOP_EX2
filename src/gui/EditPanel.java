@@ -24,30 +24,23 @@ public class EditPanel extends JPanel implements ActionListener {
         this.setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
 
-        this.addButton.setSize(100, 25);
-        this.connectButton.setSize(100, 25);
-        this.removeButton.setSize(100,25);
-        this.disconnectButton.setSize(100,25);
+        addButton.setBounds(10, 50, 125, 25);
+        removeButton.setBounds(10, 100, 125, 25);
+        connectButton.setBounds(10, 150, 125, 25);
+        disconnectButton.setBounds(10,200,125,25);
 
         addButton.addActionListener(this);
         removeButton.addActionListener(this);
         connectButton.addActionListener(this);
         disconnectButton.addActionListener(this);
 
-        //change to box layout
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        this.add(addButton,gbc);;
 
-        gbc.gridy = 2;
-        this.add(removeButton, gbc);
 
-        gbc.gridy = 4;
-        this.add(connectButton, gbc);
-
-        gbc.gridy = 6;
-        this.add(disconnectButton, gbc);
+        this.add(addButton);;
+        this.add(removeButton);
+        this.add(connectButton);
+        this.add(disconnectButton);
+        setLayout(null);
 
     }
 
