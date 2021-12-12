@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Gframe extends JFrame implements ActionListener {
@@ -102,20 +103,34 @@ public class Gframe extends JFrame implements ActionListener {
         if (modified) {
             repaint();
         }
-        if(e.getSource()==run && this.algoBox.getSelectedIndex() == 2)
-        {
-            String nodes = JOptionPane.showInputDialog("Please enter \"source destination\" ");
-            try {
-                int src = Integer.parseInt(nodes.substring(0, nodes.indexOf(" ")));
-                int dest = Integer.parseInt(nodes.substring(nodes.indexOf(" ") + 1));
-                List<NodeData> path = this.graph.shortestPath(src, dest);
+        if (e.getSource() == run) {
+            if (this.algoBox.getSelectedIndex() == 2) {
+                String nodes = JOptionPane.showInputDialog("Please enter \"source destination\" ");
+                try {
+                    int src = Integer.parseInt(nodes.substring(0, nodes.indexOf(" ")));
+                    int dest = Integer.parseInt(nodes.substring(nodes.indexOf(" ") + 1));
+                    List<NodeData> path = this.graph.shortestPath(src, dest);
+                    graphPanel.paintPath(path);
+                } catch (NumberFormatException numberFormatException) {
+                    numberFormatException.printStackTrace();
+                }
+            }
+            if (this.algoBox.getSelectedIndex() == 4){
+                int key;
+                NodeData n;
+                List<NodeData> cities = new ArrayList<>();
+                String nodes = JOptionPane.showInputDialog("Please enter keys \"city1 city2 city3 ...\" (seperated by spaces)");
+                String[] keys = nodes.split(" ");
+                for(int i = 0; i<keys.length; i++){
+                    key = Integer.parseInt(keys[i]);
+                    n = this.graph.getNode(key);
+                    cities.add(n);
+                }
+                List<NodeData> path = this.graph.tsp(cities);
                 graphPanel.paintPath(path);
-            } catch (NumberFormatException numberFormatException) {
-                numberFormatException.printStackTrace();
             }
         }
     }
-
     public static void main(String[] args) {
         Graph g = new Graph();
         g.load("data/G3.json");
