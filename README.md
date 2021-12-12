@@ -23,3 +23,7 @@ so we will keep a size parameter
 
 ### Edges
 A dynamic array of balanced trees
+
+
+
+![](images/filename Ex2_uml.png)
