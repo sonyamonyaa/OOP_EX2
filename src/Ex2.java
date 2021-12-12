@@ -1,6 +1,7 @@
 import Imp.Graph;
 import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
+import gui.Gframe;
 
 /**
  * This class is the main class for Ex2 - your implementation will be tested using this class.
@@ -9,7 +10,6 @@ public class Ex2 {
     static final int WIDTH = 1080;
     static final int HEIGHT = (int) (WIDTH / 1.6);
     static String json;
-    public  static   DirectedWeightedGraphAlgorithms alg;
     /**
      * This static function will be used to test your implementation
      *
@@ -48,22 +48,17 @@ public class Ex2 {
      * @param json_file - a json file (e.g., G1.json - G3.gson)
      */
     public static void runGUI(String json_file) {
-        alg = getGrapgAlgo(json_file);
+        DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file);
         // ****** Add your code here ******
         json = json_file;
+        Gframe gframe;
+        gframe = new Gframe(alg);
         // ********************************
     }
 
     public static void main(String[] args) {
-//        JFrame mainFrame = new JFrame();
-//        mainFrame.setSize(WIDTH, HEIGHT);
-//        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        GraphPanel paintPanel = new GraphPanel(getGrapg("data/G3.json"));
-//        Panelmain panelmain = new Panelmain();
-//        paintPanel.setPreferredSize(new Dimension(Ex2.WIDTH, (Ex2.HEIGHT * 3) / 4));
-//        mainFrame.getContentPane().add(paintPanel, BorderLayout.CENTER);
-//        mainFrame.add(panelmain, BorderLayout.SOUTH);
-//        mainFrame.setVisible(true);
+        //a simple scan of the json file
+        //later the args argument goes to run gui
     }
 }
 
