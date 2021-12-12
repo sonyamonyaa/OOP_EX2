@@ -26,4 +26,4 @@ A dynamic array of balanced trees
 
 
 
-![](images/filename Ex2_uml.png)
+![](images/filenameEx2_uml.png)
