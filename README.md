@@ -26,4 +26,4 @@ A dynamic array of balanced trees
 
 
 
-![](images/filename%20Ex2_uml.png)
+![github-small](https://github.com/sonyamonyaa/OOP_EX2/blob/main/src/UMLs/Ex2_uml.png)
