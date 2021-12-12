@@ -121,8 +121,8 @@ public class Gframe extends JFrame implements ActionListener {
                 List<NodeData> cities = new ArrayList<>();
                 String nodes = JOptionPane.showInputDialog("Please enter keys \"city1 city2 city3 ...\" (seperated by spaces)");
                 String[] keys = nodes.split(" ");
-                for(int i = 0; i<keys.length; i++){
-                    key = Integer.parseInt(keys[i]);
+                for (String s : keys) {
+                    key = Integer.parseInt(s);
                     n = this.graph.getNode(key);
                     cities.add(n);
                 }

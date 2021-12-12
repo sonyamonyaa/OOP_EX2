@@ -5,9 +5,11 @@ import Imp.Graph;
 import Imp.Node;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 
 public class FilePanel extends JPanel implements ActionListener {
@@ -42,8 +44,18 @@ public class FilePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == saveButton) {
-            this.graph.save("data/" + nameField.getText());
             //file chooser
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Specify a json file to save");
+            fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Json (.json)", "json"));
+            fileChooser.setFileFilter(fileChooser.getChoosableFileFilters()[0]);
+            fileChooser.setSelectedFile(new File("Json.json"));
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                this.graph.save(fileToSave.getAbsolutePath());
+            }
         }
         if (e.getSource() == loadButton) {
             this.graph.load("data/" + jsonBox.getSelectedItem());

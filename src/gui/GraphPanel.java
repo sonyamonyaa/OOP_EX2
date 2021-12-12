@@ -116,7 +116,7 @@ public class GraphPanel extends JPanel {
         Graphics g = this.getGraphics();
         for(int i = 1; i <path.size();i++){
             n0 = (Node) path.get(i-1);
-            g.setColor(Color.green);
+            g.setColor(new Color(0, 129, 90));
             drawNode(n0,5,g);
             n1 = (Node) path.get(i);
             k0 = n0.getKey();
