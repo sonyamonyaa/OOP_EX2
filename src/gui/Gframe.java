@@ -123,11 +123,6 @@ public class Gframe extends JFrame implements ActionListener {
             }
         }
     }
-    public static void main(String[] args) {
-        Graph g = new Graph();
-        g.load("data/G3.json");
-        new Gframe(g);
-    }
 }
 
 

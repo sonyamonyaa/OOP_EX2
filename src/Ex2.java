@@ -9,7 +9,6 @@ import gui.Gframe;
 public class Ex2 {
     static final int WIDTH = 1080;
     static final int HEIGHT = (int) (WIDTH / 1.6);
-    static String json;
     /**
      * This static function will be used to test your implementation
      *
@@ -50,15 +49,24 @@ public class Ex2 {
     public static void runGUI(String json_file) {
         DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file);
         // ****** Add your code here ******
-        json = json_file;
-        Gframe gframe;
-        gframe = new Gframe(alg);
+         new Gframe(alg);
         // ********************************
     }
 
     public static void main(String[] args) {
         //a simple scan of the json file
         //later the args argument goes to run gui
+        String fileName;
+        if (args.length > 0){
+            fileName ="data/"+ args[0];
+            try {
+                runGUI(fileName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else fileName = "data/G1.json";
+        runGUI(fileName);
     }
 }
 

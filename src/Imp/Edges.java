@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 
 
@@ -83,10 +82,11 @@ class Edges {
 
     public void removeNode(int key){
         remove(key);
-
+        edgeCount--;
         for(int i = 0; i < arr.length; i++){
             if (arr[i] != null){
                 arr[i].remove(key);
+                edgeCount--;
             }
         }
     }
