@@ -38,5 +38,5 @@ so we can approximate the results
 
 
 
-###Note!
+### Note!
 when running the jar file you must enter as input the full directory of the jason file
