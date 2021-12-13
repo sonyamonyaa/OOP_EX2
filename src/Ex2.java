@@ -57,16 +57,14 @@ public class Ex2 {
         //a simple scan of the json file
         //later the args argument goes to run gui
         String fileName;
-        if (args.length > 0){
-            fileName ="data/"+ args[0];
-            try {
-                runGUI(fileName);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            fileName = args[0];
+            runGUI(fileName);
+        }catch (Exception e){
+            fileName = "data/G1.json";
+            runGUI(fileName);
         }
-        else fileName = "data/G1.json";
-        runGUI(fileName);
+
     }
 }
 
