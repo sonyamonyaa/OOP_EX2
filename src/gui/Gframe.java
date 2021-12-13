@@ -28,7 +28,7 @@ public class Gframe extends JFrame implements ActionListener {
         this.setSize(size);
         this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
-
+        this.setTitle("Directed-Weighted Graph");
         graphPanel = new GraphPanel(this.graph);
 
 
