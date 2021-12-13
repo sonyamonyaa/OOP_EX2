@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project xmlns="http://maven.apache.org/POM/4.0.0">
-    <modelVersion>1</modelVersion>
+    <modelVersion>1.0-SNAPSHOT</modelVersion>
     <artifactId>Ex2</artifactId>
+
+    <properties>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
+    </properties>
 
     <dependencies>
         <dependency>
