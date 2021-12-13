@@ -12,7 +12,7 @@ public class InfoPanel extends JPanel implements ActionListener {
     private GraphPanel graphPanel;
     private Graph graph;
 
-    public InfoPanel(Graph graph) {
+    public InfoPanel(Graph graph,JButton update) {
         this.graph = graph;
         //this.graphPanel = graphPanel;
 
@@ -24,9 +24,9 @@ public class InfoPanel extends JPanel implements ActionListener {
         nodeSize.setBounds(20, 100, 250, 20);
         edgeSize.setBounds(20, 150, 250, 20);
 
-        update = new JButton("Update");
-        update.setBounds(20, 200, 95, 30);
-        update.addActionListener(this);
+        this.update = update;
+        this.update.setBounds(20, 200, 95, 30);
+        this.update.addActionListener(this);
 
         MC.setText("Mode Count: " + this.graph.getMC());
         nodeSize.setText("Node size :" + this.graph.nodeSize());

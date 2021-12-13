@@ -7,8 +7,8 @@ import gui.Gframe;
  * This class is the main class for Ex2 - your implementation will be tested using this class.
  */
 public class Ex2 {
-    static final int WIDTH = 1080;
-    static final int HEIGHT = (int) (WIDTH / 1.6);
+//    static final int WIDTH = 1080;
+//    static final int HEIGHT = (int) (WIDTH / 1.6);
     /**
      * This static function will be used to test your implementation
      *

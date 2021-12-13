@@ -17,7 +17,7 @@ public class Gframe extends JFrame implements ActionListener {
     EditPanel editPanel;
     InfoPanel infoPanel;
     private Graph graph;
-    JButton save, load, run, add, remove, connect, disconnect,updateB;
+    JButton save, load, run, add, remove, connect, disconnect, updateButton;
     JComboBox jsonBox, algoBox;
 
     public Gframe(DirectedWeightedGraphAlgorithms graph) {
@@ -42,7 +42,8 @@ public class Gframe extends JFrame implements ActionListener {
         editPanel.setPreferredSize(new Dimension(150,50));
         editPanel.setBackground(Color.lightGray);
 
-        infoPanel = new InfoPanel(this.graph);
+        this.setInfoPanel();
+        infoPanel = new InfoPanel(this.graph,updateButton);
         infoPanel.setPreferredSize(new Dimension(150,50));
         infoPanel.setBackground(Color.lightGray);
 
@@ -54,10 +55,10 @@ public class Gframe extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
-//    private void setInfoPanel(){
-//        updateB = new JButton("Update");
-//        updateB.addActionListener(this);
-//    }
+    private void setInfoPanel(){
+        updateButton = new JButton("Update");
+        updateButton.addActionListener(this);
+    }
     private void setFilePanel() {
         String[] files, algo;
         //save button
