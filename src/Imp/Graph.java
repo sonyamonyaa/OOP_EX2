@@ -234,10 +234,10 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
     @SuppressWarnings("unchecked")
     public boolean save(String file) {
         //scan nodes
-        JSONObject nodeDetails = new JSONObject();
         JSONArray nodeList = new JSONArray();
         Node n;
         for (int i = 0; i<nodeSize(); i++) {
+            JSONObject nodeDetails = new JSONObject();
             n = (Node) getNode(i);
             //each node put details
             nodeDetails.put("pos",n.getLocation().toString());
@@ -245,13 +245,13 @@ public class Graph implements DirectedWeightedGraph, DirectedWeightedGraphAlgori
             nodeList.add(nodeDetails); //add node objects to list
         }
         //scan edges
-        JSONObject edgeDetails = new JSONObject();
         JSONArray edgeList = new JSONArray();
         Iterator<EdgeData> edIT = this.edgeIter();
         Edge edge;
         while (edIT.hasNext()){
             edge = (Edge) edIT.next();
             //each edge put details
+            JSONObject edgeDetails = new JSONObject();
             edgeDetails.put("src", edge.getSrc());
             edgeDetails.put("w", edge.getWeight());
             edgeDetails.put("dest", edge.getDest());
