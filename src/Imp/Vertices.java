@@ -89,8 +89,14 @@ class Vertices implements Iterable<NodeData>{
         NodeData n = arr[key];
         arr[key] = null;
         FreeMemory.add(0, key);
-
         size--;
+        Iterator<NodeData> nodeIt = this.iterator();
+        NodeData i;
+        while(nodeIt.hasNext()){
+            i = nodeIt.next();
+            if(i.getKey() == key)
+                nodeIt.remove();
+        }
         return n;
     }
 

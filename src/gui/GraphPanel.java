@@ -16,18 +16,17 @@ import java.util.List;
 
 public class GraphPanel extends JPanel {
     private Graph graph;
-    private double rangeX, rangeY,minX,minY,maxX,maxY;
+    private double rangeX, rangeY, minX, minY, maxX, maxY;
     private Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-    private int width;
-    private int height;
 
     public GraphPanel(DirectedWeightedGraph graph) {
         super();
 
         this.graph = (Graph) graph;
-        this.setPreferredSize(new Dimension((int) size.getWidth()-200, (int) size.getHeight() -200));
+        this.setPreferredSize(new Dimension((int) size.getWidth() - 200, (int) size.getHeight() - 200));
     }
-    public void paint(Graphics g){
+
+    public void paint(Graphics g) {
         setScales();
         paintComponents(g);
     }
@@ -47,12 +46,13 @@ public class GraphPanel extends JPanel {
             drawNode(node, 5, g);
         }
     }
+
     private void drawNode(Node n, int r, Graphics g) {
         Graphics2D graphics2D = (Graphics2D) g;
-        g.setFont(new Font("name", Font.BOLD,15));
+        g.setFont(new Font("name", Font.BOLD, 15));
         geoLocation pos = (geoLocation) n.getLocation();
-        geoLocation fp =  scale2frame(pos);
-        g.fillOval((int)fp.x()-r,(int)fp.y()-r,10,10);
+        geoLocation fp = scale2frame(pos);
+        g.fillOval((int) fp.x() - r, (int) fp.y() - r, 10, 10);
         g.drawString("id " + n.getKey(), (int) fp.x(), (int) fp.y() - 4 * r);
     }
 
@@ -62,11 +62,16 @@ public class GraphPanel extends JPanel {
         geoLocation dest = (geoLocation) gg.getNode(e.getDest()).getLocation();
         geoLocation s = scale2frame(src);
         geoLocation d = scale2frame(dest);
-        drawArrowLine(g,(int) s.x(), (int) s.y(), (int) d.x(), (int) d.y(),8,8);
+        drawArrowLine(g, (int) s.x(), (int) s.y(), (int) d.x(), (int) d.y(), 8, 8);
         double w = e.getWeight();
-        String ws = Double.toString(w).substring(0, Double.toString(w).indexOf(".")+4);
-        g.drawString("w:" + ws, (int) (s.x() + d.x())/2, (int) (s.y() + d.y())/2  - 4);
+        String ws = Double.toString(w).substring(0, Double.toString(w).indexOf(".") + 4);
+        g.drawString("w:" + ws, (int) (s.x() + d.x()) / 2, (int) (s.y() + d.y()) / 2 - 4);
     }
+
+    /*
+     * This function finds the maximum and minimum x,y coordinates
+     * and sets the ranges for x and y
+     */
     private void setScales() {
         minX = minY = Integer.MAX_VALUE;
         maxX = maxY = Integer.MIN_VALUE;
@@ -91,40 +96,56 @@ public class GraphPanel extends JPanel {
         rangeY = Math.abs(maxY - minY);
     }
 
+    /*
+     * This function transforms a number from a scale
+     */
     private double fromScale(double p, double range, double min) {
-            double ans = p - min;
-            ans /= range;
-            return ans;
-        }
-        private double toScale(double p, double range, double min) {
-            return min + p * range;
-        }
+        double ans = p - min;
+        ans /= range;
+        return ans;
+    }
+
+    /*
+     * This function transforms a number to a scale
+     */
+    private double toScale(double p, double range, double min) {
+        return min + p * range;
+    }
+
+    /*
+     * This function transforms a point from graph's plane to the frame's plane
+     */
     private geoLocation scale2frame(geoLocation p) {
         //graph
-        double fx = fromScale(p.x(),rangeX,minX);
-        double fy = fromScale(p.y(),rangeY,minY);
+        double fx = fromScale(p.x(), rangeX, minX);
+        double fy = fromScale(p.y(), rangeY, minY);
         //frame
-        fx = toScale(fx,getWidth()*0.8,150);
-		fy = toScale(fy,getHeight()*0.8,50);
-		geoLocation ans = new geoLocation(fx,fy,0);
-		return ans;
-	}
-    public void paintPath(List<NodeData> path){
-        Node n0,n1;
+        fx = toScale(fx, getWidth() * 0.8, 150);
+        fy = toScale(fy, getHeight() * 0.8, 50);
+        geoLocation ans = new geoLocation(fx, fy, 0);
+        return ans;
+    }
+
+    /*
+     * This function paints a path from a given list of nodes
+     */
+    public void paintPath(List<NodeData> path) {
+        Node n0, n1;
         Edge e;
-        int k0,k1;
+        int k0, k1;
         Graphics g = this.getGraphics();
-        for(int i = 1; i <path.size();i++){
-            n0 = (Node) path.get(i-1);
-            g.setColor(new Color(0, 129, 90));
-            drawNode(n0,5,g);
+        for (int i = 1; i < path.size(); i++) {
+            n0 = (Node) path.get(i - 1);
+            g.setColor(Color.red);
+            drawNode(n0, 5, g);
             n1 = (Node) path.get(i);
             k0 = n0.getKey();
             k1 = n1.getKey();
-            e = (Edge) this.graph.getEdge(k0,k1);
-            drawEdge(e,g);
+            e = (Edge) this.graph.getEdge(k0, k1);
+            drawEdge(e, g);
         }
     }
+
     /*
      * https://stackoverflow.com/a/27461352
      *

@@ -89,6 +89,13 @@ class Edges {
                 edgeCount--;
             }
         }
+        Iterator<EdgeData> edgeIter = this.getEdgeIter(key);
+        EdgeData edge;
+        while (edgeIter.hasNext()){
+            edge = edgeIter.next();
+            if(edge.getDest() == key || edge.getSrc() == key)
+                edgeIter.remove();
+        }
     }
 
     public void remove(int key){ arr[key] = null;}
