@@ -36,14 +36,18 @@ public class GraphPanel extends JPanel {
         Iterator<NodeData> itern = gg.nodeIter();
         while (itern.hasNext()) {
             Node node = (Node) itern.next();
-            Iterator<EdgeData> itre = gg.edgeIter(node.getKey());
-            while (itre.hasNext()) {
-                Edge e = (Edge) itre.next();
-                g.setColor(Color.gray);
-                drawEdge(e, g);
+            if(node != null) {
+                Iterator<EdgeData> itre = gg.edgeIter(node.getKey());
+                if (itre != null) {
+                    while (itre.hasNext()) {
+                        Edge e = (Edge) itre.next();
+                        g.setColor(Color.gray);
+                        drawEdge(e, g);
+                    }
+                }
+                g.setColor(Color.blue);
+                drawNode(node, 5, g);
             }
-            g.setColor(Color.blue);
-            drawNode(node, 5, g);
         }
     }
 
@@ -78,22 +82,24 @@ public class GraphPanel extends JPanel {
         Iterator<NodeData> itn = graph.nodeIter();
         while (itn.hasNext()) {
             NodeData curr = itn.next();
-            GeoLocation g = curr.getLocation();
-            if (g.x() < minX) {
-                minX = g.x();
+            if (curr != null) {
+                GeoLocation g = curr.getLocation();
+                if (g.x() < minX) {
+                    minX = g.x();
+                }
+                if (g.y() < minY) {
+                    minY = g.y();
+                }
+                if (g.x() > maxX) {
+                    maxX = g.x();
+                }
+                if (g.y() > maxY) {
+                    maxY = g.y();
+                }
             }
-            if (g.y() < minY) {
-                minY = g.y();
-            }
-            if (g.x() > maxX) {
-                maxX = g.x();
-            }
-            if (g.y() > maxY) {
-                maxY = g.y();
-            }
+            rangeX = Math.abs(maxX - minX);
+            rangeY = Math.abs(maxY - minY);
         }
-        rangeX = Math.abs(maxX - minX);
-        rangeY = Math.abs(maxY - minY);
     }
 
     /*

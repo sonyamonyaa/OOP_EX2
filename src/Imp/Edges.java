@@ -75,19 +75,34 @@ class Edges {
     }
 
     public Iterator<EdgeData> getEdgeIter(int node_id) {
-        return arr[node_id].values().iterator();
+        if(arr[node_id]!=null)
+            return arr[node_id].values().iterator();
+        return null;
     }
 
-    public EdgeData removeEdge(int src, int dest) {edgeCount--; return arr[src].remove(dest);}
+    public EdgeData removeEdge(int src, int dest) {
+        edgeCount--;
+        Iterator<EdgeData> edgeIter = this.getEdgeIter(src);
+        EdgeData edge;
+        while (edgeIter.hasNext()) {
+            edge = edgeIter.next();
+            if (edge.getDest() == dest)
+                edgeIter.remove();
+            return edge;
+        }
+        return null;
+    }
+        //return arr[src].remove(dest);}
 
     public void removeNode(int key){
-//        Iterator<EdgeData> edgeIter = this.getEdgeIter(key);
-//        EdgeData edge;
-//        while (edgeIter.hasNext()){
-//            edge = edgeIter.next();
-//            if(edge.getDest() == key || edge.getSrc() == key)
-//                edgeIter.remove();
-//        }
+        Iterator<EdgeData> edgeIter = this.getIter();
+        EdgeData edge;
+        while (edgeIter.hasNext()){
+            edge = edgeIter.next();
+            if(edge.getDest() == key || edge.getSrc() == key) {
+                edgeIter.remove();
+            }
+        }
         remove(key);
         edgeCount--;
         for(int i = 0; i < arr.length; i++){

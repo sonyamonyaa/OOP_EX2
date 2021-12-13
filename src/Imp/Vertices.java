@@ -2,10 +2,7 @@ package Imp;
 
 import api.NodeData;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 /*
@@ -89,16 +86,16 @@ class Vertices implements Iterable<NodeData> {
 
     public NodeData remove(int key) {
         NodeData n = arr[key];
-        arr[key] = null;
         FreeMemory.add(0, key);
         size--;
-//        Iterator<NodeData> nodeIt = this.iterator();
-//        NodeData i;
-//        while (nodeIt.hasNext()) {
-//            i = nodeIt.next();
-//            if (i.getKey() == key)
-//                nodeIt.remove();
-//        }
+        Iterator<NodeData> nodeIt = this.iterator();
+        NodeData i;
+        while (nodeIt.hasNext()) {
+            i = nodeIt.next();
+            if (i.getKey() == key)
+                nodeIt.remove();
+        }
+                arr[key] = null;
         return n;
     }
 
@@ -128,6 +125,14 @@ class Vertices implements Iterable<NodeData> {
 
     @Override
     public Iterator<NodeData> iterator() {
-        return Arrays.stream(arr).iterator();
+
+        //return Arrays.stream(arr).iterator(); //didn't work
+        //https://www.javacodeexamples.com/java-exception-java-lang-unsupportedoperationexception/238
+
+        //fix sized unmodifiable list
+        List<NodeData> list = Arrays.asList(arr);
+        //create new ArrayList from fixed size list object
+        list = new ArrayList(list);
+        return list.listIterator();
     }
 }
