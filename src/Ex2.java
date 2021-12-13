@@ -61,6 +61,7 @@ public class Ex2 {
             fileName = args[0];
             runGUI(fileName);
         }catch (Exception e){
+            e.printStackTrace();
             fileName = "data/G1.json";
             runGUI(fileName);
         }
