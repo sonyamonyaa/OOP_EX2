@@ -14,15 +14,24 @@ required for the project in constant or logorithmic time.
 ### TestResults:
 
 + 1000NODES
-load: 216
-center: 1750
-isConnected: 0
+load: 216, 
+center: 1750, 
+isConnected: 0, 
 shortestPath: 28
 + 10000NODES
-load: 533
-isConnected: 62
-shortestPath: 424
+load: 533, 
+isConnected: 62, 
+shortestPath: 424 
 + 100000NODES
-load: 7217
-isConnected: 1710
+load: 7217, 
+isConnected: 1710, 
 shortestPath: 82739
+
+
+we havent manage to create a file for a 1000000 node graph.
+
+however, the running time functions of the load and isConnected methods are liniar.
+shortestPath, squre
+center and tsp, cubic
+
+so we can approximate the results
