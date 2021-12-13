@@ -16,7 +16,7 @@ uses streams to implement the Iterable interface
  */
 
 
-class Vertices implements Iterable<NodeData>{
+class Vertices implements Iterable<NodeData> {
 
     private NodeData[] arr;
 
@@ -37,37 +37,39 @@ class Vertices implements Iterable<NodeData>{
         return size;
     }
 
-    public int length(){return FreeMemory.get(FreeMemory.size() -1);}
+    public int length() {
+        return FreeMemory.get(FreeMemory.size() - 1);
+    }
 
-    public NodeData get(int key){
+    public NodeData get(int key) {
         return arr[key];
     }
 
-    public Vertices(int initialSize){
+    public Vertices(int initialSize) {
         size = 0;
         arr = new NodeData[initialSize];
         FreeMemory = new LinkedList<>();
         FreeMemory.add(0);
     }
 
-    public int add(NodeData n){
+    public int add(NodeData n) {
         Node node = new Node(n);
 
         int last = FreeMemory.get(0);
 
-        if (last != node.getKey()){
+        if (last != node.getKey()) {
             String message = "node " + node.getKey() + " ";
             node.setKey(last);
             System.out.println(message + "is now node " + node.getKey());
         }
 
         FreeMemory.remove(0);
-        if (FreeMemory.isEmpty()){
-            FreeMemory.add(last +1);
+        if (FreeMemory.isEmpty()) {
+            FreeMemory.add(last + 1);
         }
 
         int k = node.getKey();
-        if (arr.length <= k){
+        if (arr.length <= k) {
             this.increase();
         }
         arr[k] = node;
@@ -85,25 +87,25 @@ class Vertices implements Iterable<NodeData>{
         arr = NewArr;
     }
 
-    public NodeData remove(int key){
+    public NodeData remove(int key) {
         NodeData n = arr[key];
         arr[key] = null;
         FreeMemory.add(0, key);
         size--;
-        Iterator<NodeData> nodeIt = this.iterator();
-        NodeData i;
-        while(nodeIt.hasNext()){
-            i = nodeIt.next();
-            if(i.getKey() == key)
-                nodeIt.remove();
-        }
+//        Iterator<NodeData> nodeIt = this.iterator();
+//        NodeData i;
+//        while (nodeIt.hasNext()) {
+//            i = nodeIt.next();
+//            if (i.getKey() == key)
+//                nodeIt.remove();
+//        }
         return n;
     }
 
-    public int getFirst(){
+    public int getFirst() {
         int i = 0;
-        while (i < arr.length){
-            if (arr[i] != null){
+        while (i < arr.length) {
+            if (arr[i] != null) {
                 return i;
             }
             i++;
@@ -115,11 +117,11 @@ class Vertices implements Iterable<NodeData>{
 
     //returns the last location in the
     //structure that contains a node
-    public int max(){
-        int n = FreeMemory.get(FreeMemory.size() -1);
-        if (n == arr.length){
-            return n-1;
-        }else {
+    public int max() {
+        int n = FreeMemory.get(FreeMemory.size() - 1);
+        if (n == arr.length) {
+            return n - 1;
+        } else {
             return n;
         }
     }

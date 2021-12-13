@@ -48,7 +48,7 @@ class EdgesTest {private final Edge e1 = new Edge(0,1,1.232037506070033);
         assertEquals(3,g.edgeSize());
         g.removeNode(1);
         assertEquals(2, g.nodeSize());
-        assertEquals(0,g.edgeSize());// :(
+        assertEquals(0,g.edgeSize());
 
     }
 
